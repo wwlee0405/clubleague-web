@@ -34,47 +34,40 @@ const MemberText = styled(SubText)`
   font-size: 13px;
 `;
 
-function ClubItem({
-  clubname,
-  emblem,
-  clubArea,
-  sports,
-  clubLeader,
-  totalMember,
-}) {
+function ClubItem({ club }) {
   return (
     <div>
+      <EmblemWrap>
+        {club?.emblem ? (
+          <ClubEmblem src={club?.emblem} />
+        ) : (
+          <ClubEmblem src={require('../../data/2bar.jpg')} />
+        )}
+      </EmblemWrap>
       
-        <EmblemWrap>
-          {emblem ? (
-            <ClubEmblem src={emblem} />
-          ) : (
-            <ClubEmblem src={require('../../data/2bar.jpg')} />
-          )}
-        </EmblemWrap>
-      
-        <InfoWrap>
-          <ClubnameText>{clubname}</ClubnameText>
-          <ClubAreaText>{clubArea}</ClubAreaText>
-          <Text>sports</Text>
-          <LeaderText>Leader <Text>{clubLeader?.username}</Text></LeaderText>
-          <MemberText>{totalMember === 1 ? "Member" : "Members"} <Text>{totalMember}</Text></MemberText>
-        </InfoWrap>
- 
+      <InfoWrap>
+        <ClubnameText>{club?.clubname}</ClubnameText>
+        <ClubAreaText>{club?.clubArea}</ClubAreaText>
+        <Text>sports</Text>
+        <LeaderText>Leader <Text>{club?.clubLeader.username}</Text></LeaderText>
+        <MemberText>{club?.totalMember === 1 ? "Member" : "Members"} <Text>{club?.totalMember}</Text></MemberText>
+      </InfoWrap> 
     </div>
   );
 }
 
 ClubItem.propTypes = {
-  id: PropTypes.number,
-  clubname: PropTypes.string,
-  emblem: PropTypes.string,
-  clubArea: PropTypes.string,
-  clubLeader: PropTypes.shape({
-    username: PropTypes.string,
+  club: PropTypes.shape({
+    id: PropTypes.number,
+    clubname: PropTypes.string,
+    emblem: PropTypes.string,
+    clubArea: PropTypes.string,
+    clubLeader: PropTypes.shape({
+      username: PropTypes.string,
+    }),
+    sports: PropTypes.string,
+    totalMember: PropTypes.number,
   }),
-  sports: PropTypes.string,
-  totalMember: PropTypes.number,
 };
 
 export default ClubItem;

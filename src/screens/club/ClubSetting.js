@@ -10,6 +10,8 @@ import ToggleButton from "../../components/shared/ToggleButton";
 import AppointBoard from "../../components/club/AppointBoard";
 import UnappointBoard from "../../components/club/UnappointBoard";
 import TransferLeader from "../../components/club/TransferLeader";
+import UnjoinClub from "../../components/club/UnjoinClub";
+import { CLUB_FRAGMENT } from "../../fragments";
 
 const TOGGLE_WRITE_MUTATION = gql`
   mutation toggleWriteAuth($id: Int!) {
@@ -29,19 +31,37 @@ const TOGGLE_INVITE_MUTATION = gql`
     }
   }
 `;
-const SEE_CLUB = gql`
-  query seeClub($id: Int!) {
-    seeClub(id: $id) {
+//const SEE_CLUB = gql`
+//  query seeClub($id: Int!) {
+//    seeClub(id: $id) {
+//      id
+//      clubname
+//      emblem
+//      clubLeader {
+//        id
+//      }
+//      writeAuth
+//      inviteAuth
+//    }
+//  }
+//`;
+
+const SEE_JOINED_CLUB = gql`
+  query seeJoinedClub($userId:Int!,$clubId: Int!) {
+    seeJoinedClub(userId: $userId,clubId: $clubId) {
       id
-      clubname
-      emblem
-      clubLeader {
+      boardAuth
+      user {
         id
       }
-      writeAuth
-      inviteAuth
+      club {
+        ...ClubFragment
+        writeAuth
+        inviteAuth
+      }
     }
   }
+  ${CLUB_FRAGMENT}
 `;
 
 const Container = styled.div`
@@ -91,11 +111,13 @@ function ClubSetting() {
   const { Modal: MemberAuth, open: memberAuthOpen, close: memberAuthClose } = useModal();
   const { Modal: BoardAuth, open: boardAuthOpen, close: boardAuthClose } = useModal();
   const { Modal: BoardUnauth, open: boardUnauthOpen, close: boardUnauthClose } = useModal();
-  const { Modal: Transfer_Leader, open: Transfer_Leader_Open, close: Transfer_Leader_Close } = useModal();
+  const { Modal: Transfer_Leader, open: transfer_Leader_Open, close: transfer_Leader_Close } = useModal();
+  const { Modal: Unjoin_Club, open: unjoin_Club_Open, close: unjoin_Club_Close } = useModal();
   const [value, setValue] = useState(false);
-  const { data, loading } = useQuery(SEE_CLUB, {
+  const { data, loading } = useQuery(SEE_JOINED_CLUB, {
     variables: {
-      id: state?.clubId,
+      clubId: state?.clubId,
+      userId: userData?.me.id,
     },
   });
   const toggleWriteUpdate = (cache, result) => {
@@ -146,8 +168,14 @@ function ClubSetting() {
     update: toggleInviteUpdate,
   });
 
-  const clubLeader = data?.seeClub?.clubLeader.id;
+  const clubLeader = data?.seeJoinedClub?.club?.clubLeader?.id;
   const me = userData?.me.id;
+  const seeJoinedClubId = data?.seeJoinedClub?.id;
+  const data_seeJoinedClub = data?.seeJoinedClub;
+
+  console.log(clubLeader);
+  console.log(state?.userId);
+  console.log(data?.seeJoinedClub?.id);
   return (
     <div>
       
@@ -194,15 +222,15 @@ function ClubSetting() {
             <MemberAuth title="멤버권한 설정">
               <ModalWrep>
                 <span>Writing authority</span>
-                <ToggleButton value={data?.seeClub?.writeAuth} handleClick={toggleWrite} />
+                <ToggleButton value={data?.seeJoinedClub?.club?.writeAuth} handleClick={toggleWrite} />
               </ModalWrep>                
-              <span>모든 멤버들에게 글쓰기(매치) 권한이 {data?.seeClub?.writeAuth ? "부여되었습니다." : "정지되었습니다."}</span>
+              <span>모든 멤버들에게 글쓰기(매치) 권한이 {data?.seeJoinedClub?.club?.writeAuth ? "부여되었습니다." : "정지되었습니다."}</span>
 
               <ModalWrep>
                 <span>Invite authority</span>
-                <ToggleButton value={data?.seeClub?.inviteAuth} handleClick={toggleInvite} />
+                <ToggleButton value={data?.seeJoinedClub?.club?.inviteAuth} handleClick={toggleInvite} />
               </ModalWrep>
-              <span>모든 멤버에게 친구 초대하기 권한이 {data?.seeClub?.inviteAuth ? "부여되었습니다." : "정지되었습니다."}</span>
+              <span>모든 멤버에게 친구 초대하기 권한이 {data?.seeJoinedClub?.club?.inviteAuth ? "부여되었습니다." : "정지되었습니다."}</span>
             </MemberAuth>
 
             <TextWrep onClick={boardAuthOpen}>
@@ -221,7 +249,7 @@ function ClubSetting() {
               <UnappointBoard />
             </BoardUnauth>
               
-            <TextWrep onClick={Transfer_Leader_Open}>
+            <TextWrep onClick={transfer_Leader_Open}>
               <Text>리더양도</Text>
             </TextWrep>
 
@@ -245,9 +273,13 @@ function ClubSetting() {
       <Container>
         <Title>-나의 활동관리-</Title>
 
-        <TextWrep>
+        <TextWrep onClick={unjoin_Club_Open}>
           <Text>클럽탈퇴</Text>
         </TextWrep>
+
+        <Unjoin_Club title="클럽탈퇴">
+          <UnjoinClub key={seeJoinedClubId} {...data_seeJoinedClub} />
+        </Unjoin_Club>
       </Container>
 
     </div>

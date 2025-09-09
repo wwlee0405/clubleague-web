@@ -25,10 +25,9 @@ const ClubName = styled.span`
   padding-top: 10px;
 `;
 
-function MyClubList({ club }) {
-
+function MyClubList({ club, user }) {
   return (
-    <Link to={`/club/${club.clubname}`} state={{ clubId: club.id }}>    
+    <Link to={`/club/${club.clubname}`} state={{ clubId: club.id, userId: user.id }}>
       <ClubTeam>
         {club.emblem ?
           (<ClubEmblem src={club.emblem} />)
@@ -42,6 +41,9 @@ function MyClubList({ club }) {
 }
   
 MyClubList.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }),
   club: PropTypes.shape({
     id: PropTypes.number,
     emblem: PropTypes.string,

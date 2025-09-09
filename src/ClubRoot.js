@@ -8,6 +8,7 @@ import { CLUB_FRAGMENT, MEMBER_FRAGMENT, GAME_FRAGMENT } from "./fragments";
 import { gql, useQuery } from "@apollo/client";
 import { useLocation } from "react-router-dom";
 import { HeaderStyle } from "./components/shared";
+import useUser, { ME_QUERY } from "./hooks/useUser";
 
 const ROOT_SEE_CLUB = gql`
   query seeClub($id: Int!) {
@@ -20,6 +21,22 @@ const ROOT_SEE_CLUB = gql`
   }
   ${CLUB_FRAGMENT}
   ${MEMBER_FRAGMENT}
+`;
+
+const ROOT_SEE_JOINED_CLUB = gql`
+  query seeJoinedClub($userId:Int!,$clubId: Int!) {
+    seeJoinedClub(userId: $userId,clubId: $clubId) {
+      id
+      boardAuth
+      user {
+        id
+      }
+      club {
+        ...ClubFragment
+      }
+    }
+  }
+  ${CLUB_FRAGMENT}
 `;
 
 const Container = styled.div`
@@ -55,13 +72,14 @@ const Content = styled.main`
 
 function ClubRoot() {
   const { state } = useLocation();
-  const { data, loading } = useQuery(ROOT_SEE_CLUB, {
+  const { data, loading } = useQuery(ROOT_SEE_JOINED_CLUB, {
     variables: {
-      id: state?.clubId,
+      clubId: state?.clubId,
+      userId: state?.userId,
     },
   });
   
-  const noSticky = <ClubNav key={data?.seeClub.id} {...data?.seeClub} />;
+  const noSticky = <ClubNav key={data?.seeJoinedClub.id} {...data?.seeJoinedClub} />;
   const [stickyNav, setStickyNav] = useState({
     Sticky : noSticky
 
@@ -72,13 +90,13 @@ function ClubRoot() {
     });
   }
   const yesSticky = <span>ysesfs</span>;
-
+  
   return (
     <Container>
       <Header />
       <ClubContainer>
         <ClubInfo>
-          <ClubItem key={data?.seeClub.id} {...data?.seeClub} />
+          <ClubItem key={data?.seeJoinedClub.id} {...data?.seeJoinedClub} />
         </ClubInfo>
       </ClubContainer>
       <StickyContainer>

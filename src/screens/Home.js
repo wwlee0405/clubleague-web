@@ -13,6 +13,9 @@ const SEE_MY_CLUB = gql`
   query seeMyClub($offset: Int!) {
     seeMyClub(offset: $offset) {
       id
+      user {
+        id
+      }
       club {
         id
         clubname

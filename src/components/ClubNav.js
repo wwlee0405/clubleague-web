@@ -18,13 +18,13 @@ const ClubNavItem = styled.div`
 `;
 
 function ClubNav({
-  id,
-  clubname,
+  user,
+  club,
 }) {
   return (
     <Container>
       <NavBtn>
-        <Link to={`/club/${clubname}`} state={{ clubId: id }}>
+        <Link to={`/club/${club?.clubname}`} state={{ clubId: club?.id, userId: user?.id }}>
           <ClubNavItem>
             <span>Home</span>
           </ClubNavItem>
@@ -32,7 +32,7 @@ function ClubNav({
       </NavBtn>
               
       <NavBtn>
-        <Link to={`/club/${clubname}/calendar`} state={{ clubId: id }}>
+        <Link to={`/club/${club?.clubname}/calendar`} state={{ clubId: club?.id, userId: user?.id }}>
           <ClubNavItem>
             <span>Calendar</span>
           </ClubNavItem>
@@ -40,7 +40,7 @@ function ClubNav({
       </NavBtn>
                         
       <NavBtn>
-        <Link to={`/club/${clubname}/member`} state={{ clubId: id }}>
+        <Link to={`/club/${club?.clubname}/member`} state={{ clubId: club?.id, userId: user?.id }}>
           <ClubNavItem>
             <span>Member</span>
           </ClubNavItem>
@@ -48,7 +48,7 @@ function ClubNav({
       </NavBtn>
               
       <NavBtn>
-        <Link to={`/club/${clubname}/setting`} state={{ clubId: id }}>
+        <Link to={`/club/${club?.clubname}/setting`} state={{ clubId: club?.id, userId: user?.id }}>
           <ClubNavItem>
             <span>Setting</span>
           </ClubNavItem>
