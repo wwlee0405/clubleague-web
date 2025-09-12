@@ -1,7 +1,7 @@
 import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
@@ -18,7 +18,31 @@ const UNJOIN_CLUB = gql`
   }
 `;
 
+const Wrapper = styled.div`
+  padding: 5px 15px;
+`;
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+const Username = styled(MainText)`
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: 600;
+`;
+const Title = styled(SubText)`
+  margin: 5px 15px;
+  font-size: 12px;
+`;
+const BottonWrep = styled.div`
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+`;
+
 function UnjoinClub({ id, user }) {
+  const navigate = useNavigate();
   const { state } = useLocation();
   const unjoinClubUpdate = (cache, result) => {
     const {
@@ -26,8 +50,11 @@ function UnjoinClub({ id, user }) {
         unjoinClub: { ok, id }
       },
     } = result;
+    if (ok) {
+      navigate(`/`);
+    }
   };
-  const [unjoinClub] = useMutation(UNJOIN_CLUB, {
+  const [unjoinClub, { loading }] = useMutation(UNJOIN_CLUB, {
     variables: {
       id,
     },
@@ -38,12 +65,14 @@ function UnjoinClub({ id, user }) {
   return (
     <div>
       <span>이 클럽에서 정말 탈퇴합니까?</span>
-      <ActionButton
-        onClick={unjoinClub}
-        buttonColor={{ main: (props) => props.theme.blue }}
-        textColor={{ main: (props) => props.theme.white }}
-        text="YES"
-      />
+      <BottonWrep>
+        <ActionButton
+          onClick={unjoinClub}
+          buttonColor={{ main: (props) => props.theme.primary }}
+          textColor={{ main: (props) => props.theme.white }}
+          text={loading ? "Loading..." : "YES"}
+        />
+      </BottonWrep>
     </div>
   )
 }

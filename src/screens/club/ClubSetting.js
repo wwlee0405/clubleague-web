@@ -238,7 +238,7 @@ function ClubSetting() {
             </TextWrep>
 
             <BoardAuth title="임원임명"> 
-              <AppointBoard />
+              <AppointBoard onClick={boardAuthClose} />
             </BoardAuth>
               
             <TextWrep onClick={boardUnauthOpen}>

@@ -211,7 +211,7 @@ function Header() {
                     <ProfileRow 
                       key={club?.id}
                       profileLink={`/club/${club?.clubname}`}
-                      state={{ clubId: club?.id }}
+                      state={{ clubId: club?.id, userId: data?.me.id }}
                       avatar={club?.emblem} 
                       username={club?.clubname} 
                     />

@@ -57,7 +57,7 @@ const BottonWrep = styled.div`
   justify-content: center;
 `;
 
-function AppointBoard() {
+function AppointBoard({onClick}) {
   const { state } = useLocation();
   const [chosenMember, setChosenMember] = useState("");
   const { data } = useQuery(SEE_CLUBMEMBER, {
