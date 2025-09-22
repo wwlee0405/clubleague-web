@@ -136,7 +136,7 @@ function Home() {
       <PageTitle title="Home" />
       <TitleWrep>
         <Title>My Club</Title>
-        <Link to={`/createclub`}>
+        <Link to={`/create_club`}>
           <Action>
             <FontAwesomeIcon icon={faPlus} fontSize="20px" />
           </Action>
@@ -149,7 +149,7 @@ function Home() {
           </EmblemWrep>
         ))}
         <CircleActionWrep>
-          <Link to={`/createclub`}>
+          <Link to={`/create_club`}>
             <CircleAction><FontAwesomeIcon icon={faPlus} size="2x" /></CircleAction>
           </Link>
         </CircleActionWrep>

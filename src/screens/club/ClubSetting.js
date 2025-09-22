@@ -236,25 +236,22 @@ function ClubSetting() {
             <TextWrep onClick={boardAuthOpen}>
               <Text>임원임명</Text>
             </TextWrep>
-
             <BoardAuth title="임원임명"> 
-              <AppointBoard onClick={boardAuthClose} />
+              <AppointBoard onClose={boardAuthClose} />
             </BoardAuth>
               
             <TextWrep onClick={boardUnauthOpen}>
               <Text>임원해제</Text>
             </TextWrep>
-
             <BoardUnauth title="임원해제">
-              <UnappointBoard />
+              <UnappointBoard onClose={boardUnauthClose} />
             </BoardUnauth>
               
             <TextWrep onClick={transfer_Leader_Open}>
               <Text>리더양도</Text>
             </TextWrep>
-
             <Transfer_Leader title="리더양도">
-              <TransferLeader />
+              <TransferLeader onClose={transfer_Leader_Close} />
             </Transfer_Leader>
 
             <TextWrep>

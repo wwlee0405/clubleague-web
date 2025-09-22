@@ -27,27 +27,27 @@ const ModalHeader = styled.div`
 `;
 
 // `useBlur` props로 모달 외부를 클릭하면 모달을 닫을지 선택하도록 했다.
-const useAwayEntryModal = ({ useBlur = true } = {}) => {
+const useEntryModal = ({ useBlur = true } = {}) => {
   // 모달의 렌더링 여부를 설정할 상태 값
   const [isOpen, setIsOpen] = useState(false);
-
+  
   // 모달 열기
-  const awayEntryOpen = useCallback(() => {
+  const entryOpen = useCallback(() => {
     setIsOpen(() => true);
   }, []);
   
   // 모달 닫기
-  const awayEntryClose = useCallback(() => {
+  const entryClose = useCallback(() => {
     setIsOpen(() => false);
   }, []);
   
   // isOpen이 true라면 Modal 컴포넌트를 반환, false라면 null을 반환
   return {
-    AwayEntryModal: isOpen
+    EntryModal: isOpen
       ? ({ children }) => (
         <ModalContainer 
           className="modal"
-          onClick={useBlur ? awayEntryClose : null}
+          onClick={useBlur ? entryClose : null}
         >
           <ModalStyle 
             className="modal_container"
@@ -55,7 +55,7 @@ const useAwayEntryModal = ({ useBlur = true } = {}) => {
           >
             <ModalHeader>
               <div></div>
-              <div onClick={useBlur ? awayEntryClose : null}>
+              <div onClick={useBlur ? entryClose : null}>
                 <FontAwesomeIcon icon={faMap} size="2x" />
                 <span>X</span>
               </div>
@@ -67,10 +67,10 @@ const useAwayEntryModal = ({ useBlur = true } = {}) => {
         
       )
       : () => null,
-    awayEntryOpen,
-    awayEntryClose,
+    entryOpen,
+    entryClose,
     isOpen,
   };
 };
   
-export default useAwayEntryModal;
+export default useEntryModal;

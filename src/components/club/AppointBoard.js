@@ -57,9 +57,11 @@ const BottonWrep = styled.div`
   justify-content: center;
 `;
 
-function AppointBoard({onClick}) {
+function AppointBoard({ onClose }) {
   const { state } = useLocation();
-  const [chosenMember, setChosenMember] = useState("");
+  const [chosenMemberId, setChosenMemberId] = useState("");
+  const [chosenMembername, setChosenMembername] = useState("");
+  const [ , setOnCloseModal] = useState("");
   const { data } = useQuery(SEE_CLUBMEMBER, {
     variables: {
       clubId: state?.clubId,
@@ -72,7 +74,7 @@ function AppointBoard({onClick}) {
       },
     } = result;
     if (ok) {
-      const fragmentId = `Member:${chosenMember}`;
+      const fragmentId = `Member:${chosenMemberId}`;
       const fragment = gql`
         fragment AppointBoard on Member {
           boardAuth
@@ -96,21 +98,25 @@ function AppointBoard({onClick}) {
   };
   const [appointBoard] = useMutation(APPOINT_BOARD, {
     variables: {
-      id: chosenMember,
+      id: chosenMemberId,
     },
     update: appointBoardUpdate,
   });
-  const chooseMember = (memberId) => {
-    setChosenMember(memberId);
+  const chooseMember = (memberId,memberName) => {
+    setChosenMemberId(memberId);
+    setChosenMembername(memberName);
+  };
+  const closeButton = (value) => {
+    setOnCloseModal(value);
   };
   return (
     <div>
       <span>임원으로 임명할 멤버를 선택해주세요</span>
       <Wrapper>
-        {chosenMember !== "" ? (
+        {chosenMemberId !== "" ? (
           <Row>
             <Avatar url={require('../../data/gggg.jpg')} />
-            <Username>{chosenMember}</Username>
+            <Username>{chosenMembername}</Username>
           </Row>
         ) : null}
       </Wrapper>
@@ -133,18 +139,25 @@ function AppointBoard({onClick}) {
         <Title>Member</Title>
         {data?.seeClubMembers?.map((members) => (
           members.boardAuth === false ? (
-            <Wrapper onClick={() => chooseMember(members.id)}>
+            <Wrapper 
+              onClick={() => {
+                chooseMember(
+                  members.id,
+                  members.user.username
+                )
+              }}
+            >
               <Row>
                 <Avatar url={require('../../data/gggg.jpg')} />
                 <Username>{members.user.username}</Username>
               </Row> 
             </Wrapper>
-          ) : null      
+          ) : null    
         ))}
       </div>
 
       <BottonWrep>
-        {chosenMember === "" ? (
+        {chosenMemberId === "" ? (
             <ActionButton
               onClick={null}
               buttonColor={{ main: (props) => props.theme.grey03 }}
@@ -153,7 +166,10 @@ function AppointBoard({onClick}) {
             />
           ) : (
             <ActionButton
-              onClick={appointBoard}
+              onClick={() => {
+                appointBoard();
+                closeButton(onClose); 
+              }}
               buttonColor={{ main: (props) => props.theme.blue }}
               textColor={{ main: (props) => props.theme.white }}
               text="임원임명"

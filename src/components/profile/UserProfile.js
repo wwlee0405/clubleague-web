@@ -104,6 +104,7 @@ const ClubName = styled(FatText)`
 `;
 
 function UserProfile({
+    id,
     avatar,
     username,
     fullName,
@@ -162,7 +163,7 @@ function UserProfile({
             {userMember?.map((joined) => (
               <Link 
                 to={`/club/${joined?.club?.clubname}`} 
-                state={{ clubId: joined?.club?.id }}
+                state={{ clubId: joined?.club?.id, userId: id }}
               >
                 <ClubTeam>
                   <ClubEmblem src={require('../../data/2bar.jpg')} />
@@ -177,6 +178,7 @@ function UserProfile({
   }
   
   UserProfile.propTypes = {
+    id: PropTypes.number,
     avatar: PropTypes.string,
     username: PropTypes.string,
     fullName: PropTypes.string,

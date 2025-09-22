@@ -10,14 +10,26 @@ const ModalContainer = styled.div`
   background-color: transparent;
 `;
 const ModalStyle = styled.div`
-  width: 300px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.cardContent};
+  width: ${(props) => (props.modalWidth.main)};
+  margin-top: ${(props) => (props.marginTop.main)};
+  margin-left: ${(props) => (props.marginLeft.main)};
 `;
+ModalStyle.defaultProps = {
+  modalWidth: {
+    main: "300px"
+  },
+  marginTop: {
+    main: "0px"
+  },
+  marginLeft: {
+    main: "0px"
+  },
+};
 
 // `useBlur` props로 모달 외부를 클릭하면 모달을 닫을지 선택하도록 했다.
-const useSearchModal = ({ useBlur = true } = {}) => {    
+// isOpen이 true라면 Modal 컴포넌트를 반환, false라면 null을 반환
+// 이벤트 버블링 방지 시, onClick에 (e) => e.stopPropagation() 을 활용
+const useVanillaModal = ({ useBlur = true } = {}) => {    
   // 모달의 렌더링 여부를 설정할 상태 값
   const [isOpen, setIsOpen] = useState(false);
   
@@ -30,19 +42,20 @@ const useSearchModal = ({ useBlur = true } = {}) => {
   const searchClose = useCallback(() => {
     setIsOpen(() => false);
   }, []);
-  
-  // isOpen이 true라면 Modal 컴포넌트를 반환, false라면 null을 반환
   return {
     SearchModal: isOpen
-      ? ({ children }) => (
+      ? ({ children, modalWidth, marginTop, marginLeft, onClick }) => (
         <ModalContainer 
           className="modal"
           onClick={useBlur ? searchClose : null}
         >
           <ModalStyle 
             className="modal_container"
-            onClick={(e) => e.stopPropagation()}
-          > 
+            onClick={onClick}
+            modalWidth={modalWidth}
+            marginTop={marginTop}
+            marginLeft={marginLeft}
+          >
             {children}
           </ModalStyle>
         </ModalContainer>
@@ -54,4 +67,4 @@ const useSearchModal = ({ useBlur = true } = {}) => {
   };
 };
   
-export default useSearchModal;
+export default useVanillaModal;

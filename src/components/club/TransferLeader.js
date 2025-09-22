@@ -59,16 +59,17 @@ const BottonWrep = styled.div`
   justify-content: center;
 `;
 
-function TransferLeader() {
+function TransferLeader({ onClose }) {
   const { state } = useLocation();
   const { data: userData } = useUser();
-  const [chosenLeader, setChosenLeader] = useState("");
+  const [chosenLeaderId, setChosenLeaderId] = useState("");
+  const [chosenLeaderName, setChosenLeaderName] = useState("");
+    const [ , setOnCloseModal] = useState("");
   const { data } = useQuery(SEE_CLUBMEMBER, {
     variables: {
       clubId: state?.clubId,
     },
   });
-
   const transferLeaderUpdate = (cache, result) => {
     const {
       data: {
@@ -80,7 +81,7 @@ function TransferLeader() {
       const newLeader = {
         __typename: "Member",
         
-        id: chosenLeader,
+        id: chosenLeaderId,
         boardAuth: true,
         
       };
@@ -106,21 +107,25 @@ function TransferLeader() {
 
   const [transferLeader] = useMutation(TRANSFER_LEADER, {
     variables: {
-      id: chosenLeader,
+      id: chosenLeaderId,
     },
     update: transferLeaderUpdate,
   });
-  const chooseLeader = (user) => {
-    setChosenLeader(user);
+  const chooseLeader = (leaderId, leaderName) => {
+    setChosenLeaderId(leaderId);
+    setChosenLeaderName(leaderName);
+  };
+  const closeButton = (value) => {
+    setOnCloseModal(value);
   };
   return (
     <div>
       <span>리더를 양도할 멤버를 선택해주세요.</span>
       <Wrapper>
-        {chosenLeader !== "" ? (
+        {chosenLeaderId !== "" ? (
           <Row>
             <Avatar url={require('../../data/gggg.jpg')} />
-            <Username>{chosenLeader}</Username>
+            <Username>{chosenLeaderName}</Username>
           </Row>
         ) : null}
       </Wrapper>
@@ -129,7 +134,14 @@ function TransferLeader() {
         <Title>리더후보</Title>
         {data?.seeClubMembers?.map((members) => (
           members.club.clubLeader.id !== members.user?.id ? (
-            <Wrapper onClick={() => chooseLeader(members.id)}>
+            <Wrapper 
+              onClick={() => {
+                chooseLeader(
+                  members.id,
+                  members.user.username
+                )
+              }}
+            >
               <Row>
                 <Avatar url={require('../../data/gggg.jpg')} />
                 <Username>{members.user.username}</Username>
@@ -140,7 +152,7 @@ function TransferLeader() {
       </div>
 
       <BottonWrep>
-        {chosenLeader === "" ? (
+        {chosenLeaderId === "" ? (
             <ActionButton
               onClick={null}
               buttonColor={{ main: (props) => props.theme.grey03 }}
@@ -149,7 +161,10 @@ function TransferLeader() {
             />
           ) : (
             <ActionButton
-              onClick={transferLeader}
+              onClick={() => {
+                transferLeader();
+                closeButton(onClose); 
+              }}
               buttonColor={{ main: (props) => props.theme.blue }}
               textColor={{ main: (props) => props.theme.white }}
               text="리더양도"

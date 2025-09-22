@@ -1,11 +1,7 @@
-import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { CardContainer, CardBottom, MainText, SubText } from "../shared";
-import HeaderAvatar from "../shared/HeaderAvatar";
-import Avatar from "../shared/Avatar";
 import ActionButton from "../shared/ActionButton";
 
 const UNJOIN_CLUB = gql`
@@ -18,32 +14,14 @@ const UNJOIN_CLUB = gql`
   }
 `;
 
-const Wrapper = styled.div`
-  padding: 5px 15px;
-`;
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-const Username = styled(MainText)`
-  padding-left: 10px;
-  padding-right: 10px;
-  font-weight: 600;
-`;
-const Title = styled(SubText)`
-  margin: 5px 15px;
-  font-size: 12px;
-`;
 const BottonWrep = styled.div`
   display: flex;  
   align-items: center;
   justify-content: center;
 `;
 
-function UnjoinClub({ id, user }) {
+function UnjoinClub({ id, club }) {
   const navigate = useNavigate();
-  const { state } = useLocation();
   const unjoinClubUpdate = (cache, result) => {
     const {
       data: {
@@ -51,6 +29,28 @@ function UnjoinClub({ id, user }) {
       },
     } = result;
     if (ok) {
+      const memberId = `Member:${id}`;
+      cache.evict({ id: `Club:${club?.id}` });
+      const deleteClub = {
+        __typename: "Club",
+        id: club?.id,        
+      };
+      const deleteCacheClub = cache.writeFragment({
+        data: deleteClub,
+        fragment: gql`
+          fragment UnjoinClub on Club {
+            id
+          }
+        `,
+      });
+      cache.modify({
+        id: memberId,
+        field: {
+          club(prev) {
+            return [...prev, deleteCacheClub];
+          },
+        },
+      });
       navigate(`/`);
     }
   };
@@ -60,8 +60,6 @@ function UnjoinClub({ id, user }) {
     },
     update: unjoinClubUpdate,
   });
-  console.log("unjoin " + user?.id);
-  console.log("unjoinM " + id);
   return (
     <div>
       <span>이 클럽에서 정말 탈퇴합니까?</span>
@@ -70,11 +68,18 @@ function UnjoinClub({ id, user }) {
           onClick={unjoinClub}
           buttonColor={{ main: (props) => props.theme.primary }}
           textColor={{ main: (props) => props.theme.white }}
-          text={loading ? "Loading..." : "YES"}
+          text={loading ? "Loading..." : "Yes"}
         />
       </BottonWrep>
     </div>
   )
 }
+
+UnjoinClub.propTypes = {
+  id: PropTypes.number,
+  club: PropTypes.shape({
+    id: PropTypes.number,
+  }),
+};
 
 export default UnjoinClub;

@@ -57,15 +57,16 @@ const BottonWrep = styled.div`
   justify-content: center;
 `;
 
-function UnappointBoard() {
+function UnappointBoard({ onClose }) {
   const { state } = useLocation();
-  const [chosenBoard, setChosenBoard] = useState("");
+  const [chosenBoardId, setChosenBoardId] = useState("");
+  const [chosenBoardName, setChosenBoardName] = useState("");
+  const [ , setOnCloseModal] = useState("");
   const { data } = useQuery(SEE_CLUBMEMBER, {
     variables: {
       clubId: state?.clubId,
     },
   });
-
   const unappointBoardUpdate = (cache, result) => {
     const {
       data: {
@@ -73,7 +74,7 @@ function UnappointBoard() {
       },
     } = result;
     if (ok) {
-      const fragmentId = `Member:${chosenBoard}`;
+      const fragmentId = `Member:${chosenBoardId}`;
       const fragment = gql`
         fragment UnappointBoard on Member {
           boardAuth
@@ -97,32 +98,42 @@ function UnappointBoard() {
   };
   const [unappointBoard] = useMutation(UNAPPOINT_BOARD, {
     variables: {
-      id: chosenBoard,
+      id: chosenBoardId,
     },
     update: unappointBoardUpdate,
   });
-  const chooseBoard = (user) => {
-    setChosenBoard(user);
+  const chooseBoard = (boardId, boardName) => {
+    setChosenBoardId(boardId);
+    setChosenBoardName(boardName);
+  };
+  const closeButton = (value) => {
+    setOnCloseModal(value);
   };
   return (
     <div>
       <span>임원을 해제할 멤버를 선택해주세요</span>
       <Wrapper>
-        {chosenBoard !== "" ? (
+        {chosenBoardId !== "" ? (
           <Row>
             <Avatar url={require('../../data/gggg.jpg')} />
-            <Username>{chosenBoard}</Username>
+            <Username>{chosenBoardName}</Username>
           </Row>
         ) : null}
       </Wrapper>
-
 
       <div>
         <Title>Board</Title>
         {data?.seeClubMembers?.map((board) => (
           board.boardAuth === true 
             && board.club.clubLeader.id !== board.user?.id  ? (
-              <Wrapper onClick={() => chooseBoard(board.id)}>
+              <Wrapper 
+                onClick={() => {
+                  chooseBoard(
+                    board.id,
+                    board.user.username,
+                  )
+                }}
+              >
                 <Row>
                   <Avatar url={require('../../data/gggg.jpg')} />
                   <Username>{board.user.username}</Username>
@@ -133,7 +144,7 @@ function UnappointBoard() {
       </div>
 
       <BottonWrep>
-        {chosenBoard === "" ? (
+        {chosenBoardId === "" ? (
             <ActionButton
               onClick={null}
               buttonColor={{ main: (props) => props.theme.grey03 }}
@@ -142,7 +153,10 @@ function UnappointBoard() {
             />
           ) : (
             <ActionButton
-              onClick={unappointBoard}
+              onClick={() => {
+                unappointBoard();
+                closeButton(onClose);
+              }}
               buttonColor={{ main: (props) => props.theme.blue }}
               textColor={{ main: (props) => props.theme.white }}
               text="임원해제"

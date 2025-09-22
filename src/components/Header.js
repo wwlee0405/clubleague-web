@@ -6,7 +6,7 @@ import {
   faPaperPlane,
   faHeart,
 } from "@fortawesome/free-regular-svg-icons";
-import { faHome, faDisplay, faCamera, faMagnifyingGlass, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faDisplay, faCamera, faMagnifyingGlass, faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ import useUser from "../hooks/useUser";
 import routes from "../routes";
 import Avatar from "./shared/Avatar";
 import { HeaderStyle, MainText } from "./shared";
-import useSearchModal from '../hooks/useSearchModal';
+import useVanillaModal from '../hooks/useVanillaModal';
 import { useForm } from "react-hook-form";
 import Input from "./auth/Input";
 import ProfileRow from "./profile/ProfileRow";
@@ -46,6 +46,7 @@ const SHeader = styled(HeaderStyle)`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: ${(props) => props.theme.cardHeader};
 `;
 const Wrapper = styled.div`
   max-width: 1300px;
@@ -59,15 +60,25 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const SearchBox = styled.div`
+const IconBox = styled.div`
   display: flex;
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.grey03};
+  background-color: ${(props) => props.theme.border};
   justify-content: center;
   align-items: center;
-  margin-left: 25px;
+  margin-left: 20px;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.hover};
+  }
+`;
+const SearchModalContainer = styled.div`
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: ${(props) => props.theme.cardContent};
 `;
 const SearchModalHeader = styled.div`
   display: flex;
@@ -82,15 +93,29 @@ const SearchModalWrep = styled.div`
 `;
 const SearchModalText = styled(MainText)`
   font-size: 16px;
-  text-align: center;
-  align-items: center;
+`;
+const CreateModalContainer = styled.div`
+  padding: 10px 0px;
+  border-radius: 10px;
   justify-content: center;
+  background-color: ${(props) => props.theme.cardContent};
+`;
+const CreateModalTextWrep = styled.div`
+  padding: 8px 20px;
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.hover};
+  }
+  cursor: pointer;
+`;
+const CreateModalText = styled(MainText)`
+  font-size: 16px;
 `;
 const CursorIcon = styled.div`
   cursor: pointer;
 `;
 const Icon = styled.span`
-  margin-left: 25px;
+  margin-left: 20px;
   transition: 0.5s;
   &:hover,
   &:focus {
@@ -108,7 +133,6 @@ const IconBackup = styled.span`
   &:hover,
   &:focus {
     color: ${(props) => props.theme.symbolColor};
-    
   }
   &:active {
     color: ${(props) => props.theme.accent};
@@ -163,8 +187,8 @@ function Header() {
 
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const { data } = useUser();
-  
-  const { SearchModal, searchOpen, searchClose } = useSearchModal();
+  const { SearchModal, searchOpen, searchClose } = useVanillaModal();
+  const { SearchModal: CreateModal, searchOpen: createOpen, searchClose: createClose } = useVanillaModal();
   const { setValue, register, watch, handleSubmit } = useForm();
   const [startQueryFn, { loading, data: searchData, called }] = useLazyQuery(SEARCH_CLUBS);
   const onValid = ({ keyword }) => {
@@ -174,52 +198,86 @@ function Header() {
       },
     });
   };
-  
   return (
     <SHeader>
       <Wrapper>
         <Row>
           <FontAwesomeIcon icon={faInstagram} size="3x" />
 
-          <SearchBox>  
-            <CursorIcon onClick={searchOpen}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="22px" />  
-            </CursorIcon>
-            <SearchModal>
-              <form onSubmit={handleSubmit(onValid)}>
-                <SearchModalHeader>
-                  <div onClick={searchClose}>
-                    <FontAwesomeIcon icon={faArrowLeft} fontSize="22px" style={{paddingRight:10}} />
-                  </div>
-                  <Input
-                    {...register("keyword", {
-                      required: "Email is required",
-                      minLength: 1,
-                    })}
-                    type="text"
-                    placeholder="Search clubs"
-                  />
-                </SearchModalHeader>
-              </form>
-              {loading ? <SearchModalWrep><SearchModalText>searching...</SearchModalText></SearchModalWrep> : null}
-              {!called ? <SearchModalWrep><SearchModalText>Search by keyword</SearchModalText></SearchModalWrep> : null}
-              {searchData?.searchClubs !== undefined ? (
-                searchData?.searchClubs?.length === 0 ? (
-                  <SearchModalWrep><SearchModalText>Could not find anything.</SearchModalText></SearchModalWrep>
-                ) : (
-                  searchData?.searchClubs?.map((club) => (
-                    <ProfileRow 
-                      key={club?.id}
-                      profileLink={`/club/${club?.clubname}`}
-                      state={{ clubId: club?.id, userId: data?.me.id }}
-                      avatar={club?.emblem} 
-                      username={club?.clubname} 
+          <>
+            <IconBox onClick={searchOpen}>
+              <CursorIcon>
+                <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" />  
+              </CursorIcon>
+            </IconBox>
+            <SearchModal onClick={(e) => e.stopPropagation()}>
+              <SearchModalContainer>
+                <form onSubmit={handleSubmit(onValid)}>
+                  <SearchModalHeader>
+                    <div onClick={searchClose}>
+                      <FontAwesomeIcon icon={faArrowLeft} fontSize="18px" style={{paddingRight:10}} />
+                    </div>
+                    <Input
+                      {...register("keyword", {
+                        required: "Email is required",
+                        minLength: 1,
+                      })}
+                      type="text"
+                      placeholder="Search clubs"
                     />
-                  ))
-                )
-              ) : null}
+                  </SearchModalHeader>
+                </form>
+                {loading ? <SearchModalWrep><SearchModalText>searching...</SearchModalText></SearchModalWrep> : null}
+                {!called ? <SearchModalWrep><SearchModalText>Search by keyword</SearchModalText></SearchModalWrep> : null}
+                {searchData?.searchClubs !== undefined ? (
+                  searchData?.searchClubs?.length === 0 ? (
+                    <SearchModalWrep><SearchModalText>Could not find anything.</SearchModalText></SearchModalWrep>
+                  ) : (
+                    searchData?.searchClubs?.map((club) => (
+                      <ProfileRow 
+                        key={club?.id}
+                        profileLink={`/club/${club?.clubname}`}
+                        state={{ clubId: club?.id, userId: data?.me.id }}
+                        avatar={club?.emblem} 
+                        username={club?.clubname} 
+                      />
+                    ))
+                  )
+                ) : null}
+              </SearchModalContainer>
             </SearchModal>
-          </SearchBox>
+          </>
+          
+          <>
+            <IconBox onClick={createOpen}>
+              <CursorIcon>
+                <FontAwesomeIcon icon={faPlus} fontSize="18px" /> 
+              </CursorIcon>
+            </IconBox>
+            <CreateModal
+              modalWidth={{ main: "200px" }}
+              marginTop={{ main: "57px" }}
+              marginLeft={{ main: "135px" }}
+            >
+              <CreateModalContainer>
+                <CreateModalTextWrep>
+                  <Link to={`/create_match`}>
+                    <CreateModalText>Create Match</CreateModalText>
+                  </Link>
+                </CreateModalTextWrep>
+                <CreateModalTextWrep>
+                  <Link to={`/create_match`}>
+                    <CreateModalText>Create Outcluber</CreateModalText>
+                  </Link>
+                </CreateModalTextWrep>
+                <CreateModalTextWrep>
+                  <Link to={`/create_club`}>
+                    <CreateModalText>Create Club</CreateModalText>
+                  </Link>
+                </CreateModalTextWrep>
+              </CreateModalContainer>
+            </CreateModal>
+          </>
         </Row>
 
         <Row>

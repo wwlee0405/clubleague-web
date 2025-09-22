@@ -9,9 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
-import useModal from '../../hooks/useModal';
-import useHomeEntryModal from '../../hooks/useHomeEntryModal';
-import useAwayEntryModal from '../../hooks/useAwayEntryModal';
+import useEntryModal from '../../hooks/useEntryModal';
 import ProfileRow from "../profile/ProfileRow";
 
 const Container = styled(CardContainer)``;
@@ -139,9 +137,8 @@ const CommentCount = styled(SubText)`
 
 function GameItem({ id, user, homeGame, awayGame, caption, commentNumber }) {
 
-  const { Modal, open, close } = useModal();
-  const { HomeEntryModal, homeEntryOpen } = useHomeEntryModal();
-  const { AwayEntryModal, awayEntryOpen } = useAwayEntryModal();
+  const { EntryModal: HomeEntryModal, entryOpen: homeEntryOpen } = useEntryModal();
+  const { EntryModal: AwayEntryModal, entryOpen: awayEntryOpen } = useEntryModal();
 
   return (
     <Container key={id}>
