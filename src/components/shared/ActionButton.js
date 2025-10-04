@@ -25,7 +25,7 @@ ButtonTouchable.defaultProps = {
 }
 ButtonText.defaultProps = {
   textColor: {
-    main: (props) => props.theme.blue
+    main: (props) => props.theme.white
   }
 }
 

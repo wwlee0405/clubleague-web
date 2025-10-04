@@ -11,7 +11,7 @@ import ClubMember from "./screens/club/ClubMember";
 import ClubSetting from "./screens/club/ClubSetting";
 
 import NewClub from "./screens/home/NewClub";
-import CreateMatch from "./screens/match/CreateMatch";
+import CreateGame from "./screens/match/CreateGame";
 
 import GameFeed from "./screens/match/GameFeed";
 import Root from "./Root";
@@ -31,7 +31,7 @@ const router = createBrowserRouter(
         <Route path="notification" element={<Notification />} />
 
         <Route path="create_club" element={<NewClub />} />
-        <Route path="create_match" element={<CreateMatch />} />
+        <Route path="create_game" element={<CreateGame />} />
 
         
       </Route>

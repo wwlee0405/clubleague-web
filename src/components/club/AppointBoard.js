@@ -102,9 +102,9 @@ function AppointBoard({ onClose }) {
     },
     update: appointBoardUpdate,
   });
-  const chooseMember = (memberId,memberName) => {
-    setChosenMemberId(memberId);
-    setChosenMembername(memberName);
+  const chooseMember = (id,username) => {
+    setChosenMemberId(id);
+    setChosenMembername(username);
   };
   const closeButton = (value) => {
     setOnCloseModal(value);
@@ -170,8 +170,6 @@ function AppointBoard({ onClose }) {
                 appointBoard();
                 closeButton(onClose); 
               }}
-              buttonColor={{ main: (props) => props.theme.blue }}
-              textColor={{ main: (props) => props.theme.white }}
               text="임원임명"
             />
           )

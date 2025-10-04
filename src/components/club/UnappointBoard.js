@@ -102,9 +102,9 @@ function UnappointBoard({ onClose }) {
     },
     update: unappointBoardUpdate,
   });
-  const chooseBoard = (boardId, boardName) => {
-    setChosenBoardId(boardId);
-    setChosenBoardName(boardName);
+  const chooseBoard = (id, username) => {
+    setChosenBoardId(id);
+    setChosenBoardName(username);
   };
   const closeButton = (value) => {
     setOnCloseModal(value);

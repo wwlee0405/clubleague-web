@@ -261,12 +261,12 @@ function Header() {
             >
               <CreateModalContainer>
                 <CreateModalTextWrep>
-                  <Link to={`/create_match`}>
+                  <Link to={`/create_game`}>
                     <CreateModalText>Create Match</CreateModalText>
                   </Link>
                 </CreateModalTextWrep>
                 <CreateModalTextWrep>
-                  <Link to={`/create_match`}>
+                  <Link to={`/create_game`}>
                     <CreateModalText>Create Outcluber</CreateModalText>
                   </Link>
                 </CreateModalTextWrep>
