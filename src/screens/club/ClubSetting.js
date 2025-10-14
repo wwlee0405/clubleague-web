@@ -2,7 +2,6 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import useUser from "../../hooks/useUser";
-import PageTitle from "../../components/PageTitle";
 import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../../components/shared";
 import useModal from '../../hooks/useModal';

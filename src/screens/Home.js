@@ -8,6 +8,7 @@ import styled from "styled-components";
 import { MainText } from "../components/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Helmet } from "react-helmet-async";
 
 const SEE_MY_CLUB = gql`
   query seeMyClub($offset: Int!) {
@@ -133,7 +134,8 @@ function Home() {
   });
   return (
     <div>
-      <PageTitle title="Home" />
+      <PageTitle title="Clubleague" />
+      
       <TitleWrep>
         <Title>My Club</Title>
         <Link to={`/create_club`}>

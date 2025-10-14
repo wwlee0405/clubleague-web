@@ -6,15 +6,29 @@ const ME_QUERY = gql`
   query me {
     me {
       id
+      fullName
       username
       avatar
+      bio
+      userLeader {
+        clubname
+        emblem
+      }
+      userMember {
+        club {
+          id
+          clubname
+          emblem
+        }
+      }
+      isMe
     }
   }
 `;
 
 function useUser() {
   const hasToken = useReactiveVar(isLoggedInVar);
-  const { data } = useQuery(ME_QUERY, {
+  const { data, loading } = useQuery(ME_QUERY, {
     skip: !hasToken,
   });
   useEffect(() => {
@@ -22,6 +36,6 @@ function useUser() {
       logUserOut();
     }
   }, [data]);
-  return { data };
+  return { data, loading };
 }
 export default useUser;

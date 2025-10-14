@@ -1,7 +1,6 @@
-import { gql, useApolloClient, useQuery, useReactiveVar } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { gql, useReactiveVar } from "@apollo/client";
 import PageTitle from "../components/PageTitle";
-import useUser, { ME_QUERY } from "../hooks/useUser";
+import useUser from "../hooks/useUser";
 import UserProfile from "../components/profile/UserProfile";
 import styled from "styled-components";
 import { darkModeVar, disableDarkMode, enableDarkMode } from "../apollo";
@@ -37,23 +36,18 @@ const DarkModeBtn = styled.span`
 `;
 
 function Me() {
-    const { username } = useParams();
-    const { data: userData } = useUser();
+    const { data, loading } = useUser();
     const darkMode = useReactiveVar(darkModeVar);
-    const client = useApolloClient();
-    const { data, loading } = useQuery(SEE_PROFILE_QUERY, {
-      variables: {
-        username,
-      },
-    });
+    
     return (
       <div>
         <PageTitle
           title={
-            loading ? "Loading..." : `${data?.seeProfile?.username}'s Profile`
+            loading ? "Loading..." : `${data?.me?.username}'s Profile | Clubleague`
           }
         />
-        <UserProfile key={data?.seeProfile.id} {...data?.seeProfile} />
+
+        <UserProfile key={data?.me.id} {...data?.me} />
         <span>log out</span>
         <span>Me</span>
         

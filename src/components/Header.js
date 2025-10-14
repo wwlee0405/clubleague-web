@@ -286,14 +286,14 @@ function Header() {
               <Icon>
                 <Link to={routes.home}>
                   <FontAwesomeIcon icon={faHome} fontSize="22px" style={{ color: homeColor }} onClick={() => setHomeColor('blue')} />
+                  <span>home</span>
                 </Link>
-                <span>home</span>
               </Icon>
               <Icon>
                 <Link to={routes.match}>
                   <FontAwesomeIcon icon={faDisplay} fontSize="22px" style={{ color: matchColor}} onClick={() => setMatchColor('blue')} />
+                  <span>match</span>
                 </Link>
-                <span>match</span>
               </Icon>
               <Icon>
                 <Link to={routes.outcluber}>
@@ -304,8 +304,8 @@ function Header() {
               <Icon>
                 <Link to={routes.notification}>
                   <FontAwesomeIcon icon={faHeart} fontSize="22px" />
+                  <span>noti</span>
                 </Link>
-                <span>noti</span>
               </Icon>
               <Icon>
                 <Link to={routes.photo}>

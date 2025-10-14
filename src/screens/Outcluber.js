@@ -28,7 +28,7 @@ function Outcluber() {
   });
   return (
     <div>
-      <PageTitle title="Outcluber" />
+      <PageTitle title="Outcluber | Clubleague" />
       {data?.seeFeed?.map((photo) => (
         <Photo key={photo.id} {...photo} />
       ))}

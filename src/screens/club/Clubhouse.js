@@ -106,7 +106,7 @@ function Clubhouse() {
     <Container>
       <PageTitle
         title={
-          loading ? "Loading..." : `${data?.seeClub?.clubname}'s Club`
+          loading ? "Loading..." : `A${data?.seeClub?.clubname}`
         }
       />
 

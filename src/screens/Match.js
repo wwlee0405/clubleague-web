@@ -81,7 +81,7 @@ function Match() {
   
   return (
     <div>
-      <PageTitle title="Match" />
+      <PageTitle title="Match | Clubleague" />
 
       <CircleActionWrep>
         <Link to={null}>

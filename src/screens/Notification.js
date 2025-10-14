@@ -29,7 +29,7 @@ function Notification() {
   });
   return (
     <div>
-      <PageTitle title="Notification" />
+      <PageTitle title="Notification | Clubleague" />
       {data?.seeFeed?.map((photo) => (
         <Photo key={photo.id} {...photo} />
       ))}

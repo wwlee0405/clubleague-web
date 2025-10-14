@@ -1,6 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
 import { useLocation } from "react-router-dom";
-import PageTitle from "../../components/PageTitle";
 import styled from "styled-components";
 import MemberRow from "../../components/profile/MemberRow";
 
@@ -52,11 +51,7 @@ function ClubMember() {
   console.log(state?.userId);
   return (
     <Container>
-      <PageTitle
-        title={
-        loading ? "Loading..." : `${data?.seeClub?.clubname}'s Club`
-        }
-      />
+      
       <MemberCount>
         {data?.seeClub?.totalMember === 1 ?
           "1 member" : `${data?.seeClub?.totalMember} members`

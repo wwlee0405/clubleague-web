@@ -41,7 +41,7 @@ function Profile() {
       <div>
         <PageTitle
           title={
-            loading ? "Loading..." : `${data?.seeProfile?.username}'s Profile`
+            loading ? "Loading..." : `${data?.seeProfile?.username}'s Profile | Clubleague`
           }
         />
         <UserProfile key={data?.seeProfile.id} {...data?.seeProfile} />        
