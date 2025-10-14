@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import useUser from "../../hooks/useUser";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
 
@@ -98,7 +99,7 @@ const ClubName = styled(MainText)`
 `;
 
 function MatchItem({ id, user, homeGame, awayGame }) {
-  
+  const { data } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
   const updateDeleteGame = (cache, result) => {
     const {
@@ -127,7 +128,10 @@ function MatchItem({ id, user, homeGame, awayGame }) {
   return (
     <Container key={id}>
       <HeaderAvatar
-        profileLink={`/users/${user.username}`}
+        profileLink={
+          data?.me?.username !== user.username ? 
+            (`/users/${user.username}`) : (`/${data?.me?.username}`)
+        }
         image={user.avatar ? user.avatar : require('../../data/gggg.jpg')}
         topData={user.username}
         bottomData={homeClubname}

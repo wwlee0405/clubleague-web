@@ -93,6 +93,10 @@ const ClubTeam = styled.div`
   justify-content: center;
   margin-right: 20px;
   cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.cardContent};
+  }
 `;
 const ClubEmblem = styled.img`
   width: 75px;

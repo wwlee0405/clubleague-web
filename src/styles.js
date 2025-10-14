@@ -4,6 +4,7 @@ import reset from "styled-reset";
 export const lightTheme = {
   accent: "#0095f6",
   bgColor: "#FAFAFA",
+  barColor: "#ffffff",
   fontColor: "rgb(38, 38, 38)",
   borderColor: "rgb(219, 219, 219)",
 
@@ -33,9 +34,10 @@ export const lightTheme = {
 
 export const darkTheme = {
   accent: "#0095f6",
+  bgColor: "#1C1C1D",
+  barColor: "#252728",
   fontColor: "white",
-  bgColor: "#000",
-  borderColor: "#999",
+  borderColor: "#2F3132",
   
   emerald: "#51c878",
   symbolColor: "#2e8b57",
@@ -45,8 +47,8 @@ export const darkTheme = {
   cardContent: "#343a40",
   text: "#ced4da",
   subText: "#999",
-  hover: "#DEE2E6",
-  border: "#495057",
+  hover: "#3B3D3E",
+  border: "#2F3132",
   notification: 'rgb(255, 69, 58)',
   placeholder: "#9a9ea4",
   descriptionText: "#9cabc2",
@@ -57,7 +59,7 @@ export const darkTheme = {
   grey03: "#DEE2E6",
   black: "#000",
 
-  headerColor: "#000",
+  headerColor: "#1C1C1D",
   headerHight: "75px"
 };
 

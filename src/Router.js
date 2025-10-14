@@ -1,6 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import Home from "./screens/Home";
 import Match from "./screens/Match";
+import Me from "./screens/Me";
 import Profile from "./screens/Profile";
 import PhotoTest from "./screens/PhotoTest";
 import Outcluber from "./screens/Outcluber";
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
         <Route path="match" element={<Match />} />
 
 
+        <Route path="/:username" element={<Me />} />
         <Route path="/users/:username" element={<Profile />} />
         <Route path="photo" element={<PhotoTest />} />
         <Route path="outcluber" element={<Outcluber />} />

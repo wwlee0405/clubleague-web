@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { MainText } from "../shared";
 import { Link } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 import Avatar from "../shared/Avatar";
 
 const Wrapper = styled.div`
@@ -19,23 +20,29 @@ const Username = styled(MainText)`
 `;
 
 function MemberRow({ user, boardAuth }) {
+  const { data } = useUser();
+  const profileLink = (
+    data?.me?.username !== user.username ? 
+      (`/users/${user.username}`) : (`/${data?.me?.username}`)
+  );
   return (
-    <Wrapper>
-      
+    <Wrapper>      
       <Column>
-        <Link to={`/users/${user.username}`} state={user.id}>
+        <Link 
+          to={profileLink} 
+          state={user.id}
+        >
           {user.avatar ? 
             <Avatar url={user.avatar} />
             : 
             <Avatar url={require('../../data/gggg.jpg')} />
           }
         </Link>
-        <Link to={`/users/${user.username}`} state={user.id}>
+        <Link to={profileLink} state={user.id}>
           <Username>{user.username}</Username>
         </Link>
         {boardAuth ? <span>임원</span>: null}
       </Column>
-      
     </Wrapper>
   );
 }

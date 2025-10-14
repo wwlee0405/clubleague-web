@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 import MatchItem from "../components/match/MatchItem";
 import PageTitle from "../components/PageTitle";
@@ -55,11 +55,30 @@ const CircleAction = styled.div`
 `;
 
 function Match() {
-  const { data, loading } = useQuery(MATCH_QUERY, {
+  const { data, loading, error, refetch, fetchMore } = useQuery(MATCH_QUERY, {
     variables: {
       offset: 0,
     },
   });
+
+  const loadMoreMatchs = () => {
+    fetchMore({
+      variables: {
+        offset: data?.seeMatch?.length, // Calculate new offset
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return {
+          ...prev,
+          seeMatch: [...prev.seeMatch, ...fetchMoreResult.seeMatch], // Merge new matchs
+        };
+      },
+    });
+  };
+  
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  
   return (
     <div>
       <PageTitle title="Match" />
@@ -73,6 +92,8 @@ function Match() {
       {data?.seeMatch?.map((match) => (
         <MatchItem key={match.id} {...match} /> 
       ))}
+
+      <button onClick={loadMoreMatchs}>Load More</button>
     </div>
   );
 }

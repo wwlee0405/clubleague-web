@@ -6,6 +6,7 @@ import {
   faLocationDot,
   faMap,
 } from "@fortawesome/free-regular-svg-icons";
+import useUser from "../../hooks/useUser";
 import styled from "styled-components";
 import ProfileRow from "../profile/ProfileRow";
 
@@ -30,12 +31,15 @@ const CommentCaption = styled.span`
 `;
 
 function CommentItem({ id, user, payload }) {
-
+  const { data } = useUser();
   return (
     <Container key={id}>
       <Top>
         <ProfileRow
-          profileLink={`/users/${user.username}`}
+          profileLink={
+            data?.me?.username !== user.username ? 
+              (`/users/${user.username}`) : (`/${data?.me?.username}`)
+          }
           avatar={user.avatar}
           username={user.username}
         />

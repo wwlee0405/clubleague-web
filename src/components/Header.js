@@ -46,7 +46,7 @@ const SHeader = styled(HeaderStyle)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.cardHeader};
+  background-color: ${(props) => props.theme.barColor};
 `;
 const Wrapper = styled.div`
   max-width: 1300px;
@@ -287,21 +287,25 @@ function Header() {
                 <Link to={routes.home}>
                   <FontAwesomeIcon icon={faHome} fontSize="22px" style={{ color: homeColor }} onClick={() => setHomeColor('blue')} />
                 </Link>
+                <span>home</span>
               </Icon>
               <Icon>
                 <Link to={routes.match}>
                   <FontAwesomeIcon icon={faDisplay} fontSize="22px" style={{ color: matchColor}} onClick={() => setMatchColor('blue')} />
                 </Link>
+                <span>match</span>
               </Icon>
               <Icon>
                 <Link to={routes.outcluber}>
                   <FontAwesomeIcon icon={faPaperPlane} fontSize="22px" />
+                  <spna>outcluber</spna>
                 </Link>
               </Icon>
               <Icon>
                 <Link to={routes.notification}>
                   <FontAwesomeIcon icon={faHeart} fontSize="22px" />
                 </Link>
+                <span>noti</span>
               </Icon>
               <Icon>
                 <Link to={routes.photo}>
@@ -309,7 +313,7 @@ function Header() {
                 </Link>
               </Icon>
               <Icon>
-                <Link to={`/users/${data?.me?.username}`}>
+                <Link to={`/${data?.me?.username}`}>
                   <Avatar lg url={data?.me?.avatar} />
                 </Link>
               </Icon>

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
+import useUser from "../../hooks/useUser";
 import useEntryModal from '../../hooks/useEntryModal';
 import ProfileRow from "../profile/ProfileRow";
 
@@ -136,14 +137,17 @@ const CommentCount = styled(SubText)`
 `;
 
 function GameItem({ id, user, homeGame, awayGame, caption, commentNumber }) {
-
+  const { data } = useUser();
   const { EntryModal: HomeEntryModal, entryOpen: homeEntryOpen } = useEntryModal();
   const { EntryModal: AwayEntryModal, entryOpen: awayEntryOpen } = useEntryModal();
-
+  
   return (
     <Container key={id}>
       <HeaderAvatar
-        profileLink={`/users/${user?.username}`}
+        profileLink={
+          data?.me?.username !== user?.username ? 
+            (`/users/${user?.username}`) : (`/${data?.me?.username}`)
+        }
         image={user?.avatar ? user.avatar : require('../../data/gggg.jpg')}
         topData={user?.username}
         bottomData="Seoul, Korea"
@@ -215,7 +219,10 @@ function GameItem({ id, user, homeGame, awayGame, caption, commentNumber }) {
               {homeGame?.entries?.map((entry) => (
                 <ProfileRow 
                   key={entry.id} 
-                  profileLink={`/users/${entry?.user.username}`} 
+                  profileLink={
+                    data?.me?.username !== entry?.user.username ? 
+                      (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
+                  } 
                   avatar={entry?.user.avatar} 
                   username={entry?.user.username} 
                 />
@@ -239,8 +246,11 @@ function GameItem({ id, user, homeGame, awayGame, caption, commentNumber }) {
                 <div>
                   {awayGame?.entries?.map((entry) => (
                     <ProfileRow
-                      key={entry.id}
-                      profileLink={`/users/${entry?.user.username}`} 
+                      key={entry.id} 
+                      profileLink={
+                        data?.me?.username !== entry?.user.username ? 
+                          (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
+                      }
                       avatar={entry?.user.avatar} 
                       username={entry?.user.username} 
                     />

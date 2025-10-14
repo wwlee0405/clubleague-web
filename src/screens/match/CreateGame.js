@@ -6,7 +6,6 @@ import styled from "styled-components";
 import useModal from '../../hooks/useModal';
 import FormError from "../../components/auth/FormError";
 import Input from "../../components/auth/Input";
-import Button from "../../components/auth/Button";
 import ActionButton from "../../components/shared/ActionButton";
 import { FEED_MATCH } from "../../fragments";
 import Avatar from "../../components/shared/Avatar";
@@ -126,10 +125,7 @@ function CreateGame() {
   };
 
   return (
-    <Container>
-      
-      <span>Create Game</span>
-      
+    <Container>      
       <Row>
         <TitleWrapper>
           <TitleText>Sports</TitleText>          
@@ -225,7 +221,6 @@ function CreateGame() {
         onClick={handleSubmit(onValid)}
         text="Next"
       />
-      <Button />
     </Container>
   );
 }

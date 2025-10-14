@@ -3,7 +3,7 @@ import { GAME_FRAGMENT, COMMENT_FRAGMENT } from "../../fragments";
 import PageTitle from "../../components/PageTitle";
 import GameItem from "../../components/match/GameItem";
 import CommentItem from "../../components/match/CommentItem";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const SEE_GAME = gql`
@@ -60,7 +60,7 @@ const SEE_GAME_COMMENTS = gql`
 `;
 
 const Background = styled.div`
-  background-color: ${(props) => props.theme.cardHeader};
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const Container = styled.div`
   margin: 0 auto;
@@ -79,7 +79,6 @@ const WrapComment = styled.div`
 `;
 
 function GameFeed({ route }) {
-  const { id } = useParams();
   const { state } = useLocation();
   const { data } = useQuery(SEE_GAME, {
     variables: {
