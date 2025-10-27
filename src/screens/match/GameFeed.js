@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { GAME_FRAGMENT, COMMENT_FRAGMENT } from "../../fragments";
+import { GAME_FRAGMENT, COMMENT_FRAGMENT } from "../../gql/fragments";
 import PageTitle from "../../components/PageTitle";
 import GameItem from "../../components/match/GameItem";
 import CommentItem from "../../components/match/CommentItem";

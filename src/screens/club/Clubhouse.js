@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useLocation } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
-import { CLUB_FRAGMENT, MEMBER_FRAGMENT, GAME_FRAGMENT } from "../../fragments";
+import { CLUB_FRAGMENT, MEMBER_FRAGMENT, GAME_FRAGMENT } from "../../gql/fragments";
 import ClubSchedItem from "../../components/club/ClubSchedItem";
 import styled from "styled-components";
 

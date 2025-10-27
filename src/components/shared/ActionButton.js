@@ -6,7 +6,6 @@ const ButtonTouchable = styled.div`
   border-radius: 5px;
   margin-top: 12px;
   background-color: ${(props) => (props.buttonColor.main)};
-  color: white;
   text-align: center;
   padding: 10px;
   font-weight: 600;
@@ -31,13 +30,14 @@ ButtonText.defaultProps = {
 
 export default function ActionButton({
   onClick,
-  loading,
   buttonColor,
+  disabled,
+  loading,
   textColor,
   text,
 }) {
   return (
-    <ButtonTouchable buttonColor={buttonColor} onClick={onClick}>
+    <ButtonTouchable onClick={onClick} buttonColor={buttonColor} disabled={disabled}>
       {loading ? (
         <OrbitProgress color="white" style={{ fontSize: "2px" }} />
       ) : (

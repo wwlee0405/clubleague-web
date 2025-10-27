@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import PageTitle from "../components/PageTitle";
-import { GAME_FRAGMENT } from "../fragments";
+import { GAME_FRAGMENT } from "../gql/fragments";
 import { Link } from "react-router-dom";
 import MyClubList from "../components/home/MyClubList";
 import MySchedItem from "../components/home/MySchedItem";

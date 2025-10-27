@@ -1,23 +1,26 @@
 import { gql, useQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { MATCH_QUERY } from "../../gql/sharedQuery"
 import useModal from '../../hooks/useModal';
 import FormError from "../../components/auth/FormError";
 import Input from "../../components/auth/Input";
 import ActionButton from "../../components/shared/ActionButton";
-import { FEED_MATCH } from "../../fragments";
 import Avatar from "../../components/shared/Avatar";
 import { MainText, SubText } from "../../components/shared";
+import PageTitle from "../../components/PageTitle";
+import Button from "../../components/auth/Button";
 
 const CREATE_GAME_MUTATION = gql`
   mutation createGame($clubId: Int!, $file: String, $caption: String) {
     createGame(clubId: $clubId, file: $file, caption: $caption) {
-      ...FeedMatch
+      error
+      id
+      ok
     }
   }
-  ${FEED_MATCH}
 `;
 const SEE_MY_CLUB = gql`
   query seeMyClub($offset: Int!) {
@@ -32,11 +35,11 @@ const SEE_MY_CLUB = gql`
   }
 `;
 
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   border-radius: 15px;  
   padding: 20px;
   background-color: ${(props) => props.theme.cardHeader};
@@ -92,21 +95,46 @@ const Clubname = styled(MainText)`
 
 function CreateGame() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { 
+    register, 
+    handleSubmit,
+    formState: { errors, isValid }, 
+    setValue,
+    setError,
+    getValues
+  } = useForm();
   const { data } = useQuery(SEE_MY_CLUB, {
     variables: {
       offset: 0,
     },
   });
+  const onCompleted = (data) => {
+    const {
+      createGame: { ok, error },
+    } = data;
+    const { caption } = getValues();
+    if (!ok) {
+      return setError("result", {
+        message: error,
+      });
+    }
+    if (ok) {
+      navigate(`/match`,{
+        caption
+      });
+    }
+  };
   const [createGameMutation, { loading, error }] = useMutation(
-    CREATE_GAME_MUTATION,
-  );
+    CREATE_GAME_MUTATION,{
+      onCompleted,
+      refetchQueries: [MATCH_QUERY],
+  });
   const { Modal: HomeGame, open: homeGameOpen, close: homeGameClose } = useModal();
   const [chosenId, setChosenId] = useState("");
   const [chosenClubId, setChosenClubId] = useState("");
   const [chosenClubname, setChosenClubname] = useState("");
   const [chosenEmblem, setChosenEmblem] = useState("");
-  const { register, handleSubmit, setValue } = useForm();
+  
   const chooseClub = (clubId, clubname, emblem) => {
     setChosenClubId(clubId);
     setChosenClubname(clubname);
@@ -114,7 +142,9 @@ function CreateGame() {
   };
 
   const onValid = ({ file, caption }) => {
-
+    if (loading) {
+      return;
+    }
     createGameMutation({
       variables: {
         clubId: chosenClubId,
@@ -122,105 +152,111 @@ function CreateGame() {
         file,
       },
     });
-  };
-
+  };  
   return (
-    <Container>      
-      <Row>
-        <TitleWrapper>
-          <TitleText>Sports</TitleText>          
-        </TitleWrapper>
-        <div>
-          <TitleText>Sports</TitleText>  
-        </div>
-      </Row>
+    <Container>
+      <PageTitle title="Create Game" />
+      <form onSubmit={handleSubmit(onValid)}>
+        <Row>
+          <TitleWrapper>
+            <TitleText>Sports</TitleText>          
+          </TitleWrapper>
+          <div>
+            <TitleText>Sports</TitleText>  
+          </div>
+        </Row>
 
-      <Row>
-        <TitleWrapper>
-          <TitleText>Date</TitleText>          
-        </TitleWrapper>
-        <div>
-          <TitleText>Date</TitleText>  
-        </div>
-      </Row>
+        <Row>
+          <TitleWrapper>
+            <TitleText>Date</TitleText>          
+          </TitleWrapper>
+          <div>
+            <TitleText>Date</TitleText>  
+          </div>
+        </Row>
 
-      <Row>
-        <TitleWrapper>
-          <TitleText>time</TitleText>          
-        </TitleWrapper>
-        <div>
-          <TitleText>time</TitleText>  
-        </div>
-      </Row>
+        <Row>
+          <TitleWrapper>
+            <TitleText>time</TitleText>          
+          </TitleWrapper>
+          <div>
+            <TitleText>time</TitleText>  
+          </div>
+        </Row>
 
-      <Row>
-        <TitleWrapper>
-          <TitleText>Location</TitleText>          
-        </TitleWrapper>
-        <div>
-          <ClubData>
-            <TitleText>Location</TitleText>
-          </ClubData>
-        </div>
-      </Row>
+        <Row>
+          <TitleWrapper>
+            <TitleText>Location</TitleText>          
+          </TitleWrapper>
+          <div>
+            <ClubData>
+              <TitleText>Location</TitleText>
+            </ClubData>
+          </div>
+        </Row>
 
-      <Row>
-        <TitleWrapper>
-          <LabelText>Home</LabelText>
-        </TitleWrapper>
+        <Row>
+          <TitleWrapper>
+            <LabelText>Home</LabelText>
+          </TitleWrapper>
+        
+          <div>
+            <ClubData onClick={homeGameOpen}>
+              {chosenClubId !== "" ? (       
+                <SelectText>{chosenClubname}</SelectText>
+              ) : (
+                <TitleText>Select a home club to play the game</TitleText>
+              )}
+            </ClubData>
+          </div>
+        </Row>
+
+        <HomeGame title="Home 클럽을 정하시오.">
+          {data?.seeMyClub?.map((home) => (
+            <ModalWrapper
+              onClick={() => {
+                chooseClub(
+                  home.club.id,
+                  home.club.clubname,
+                  home.club.emblem,
+                );
+                homeGameClose();
+              }}
+            >
+              <Row>
+                <Avatar url={require('../../data/gggg.jpg')} />
+                <Clubname>{home.club.clubname}</Clubname>
+              </Row>
+            </ModalWrapper>
+          ))}
+        </HomeGame>
+
+        <Row>
+          <TitleWrapper>
+            <TitleText>Caption</TitleText>          
+          </TitleWrapper>
+          <div>
+            <TitleText>Caption</TitleText>  
+          </div>
+        </Row>
+
+        <Input
+          {...register("caption")}
+          type="text"
+          placeholder="caption"
+        />
+        <FormError message={errors.caption?.message} />
       
-        <div>
-          <ClubData onClick={homeGameOpen}>
-            {chosenClubId !== "" ? (       
-              <SelectText>{chosenClubname}</SelectText>
-            ) : (
-              <TitleText>Select a home club to play the game</TitleText>
-            )}
-          </ClubData>
-        </div>
-      </Row>
-
-      <HomeGame title="Home 클럽을 정하시오.">
-        {data?.seeMyClub?.map((home) => (
-          <ModalWrapper
-            onClick={() => {
-              chooseClub(
-                home.club.id,
-                home.club.clubname,
-                home.club.emblem,
-              );
-              homeGameClose();
-            }}
-          >
-            <Row>
-              <Avatar url={require('../../data/gggg.jpg')} />
-              <Clubname>{home.club.clubname}</Clubname>
-            </Row>
-          </ModalWrapper>
-        ))}
-      </HomeGame>
-
-      <Row>
-        <TitleWrapper>
-          <TitleText>Caption</TitleText>          
-        </TitleWrapper>
-        <div>
-          <TitleText>Caption</TitleText>  
-        </div>
-      </Row>
-
-      <Input
-        {...register("caption")}
-        type="text"
-        placeholder="caption"
-      />
-      
+      </form>
       <TitleText>요청받을 클럽의 개수를 정하시오.</TitleText>
 
       <ActionButton 
-        onClick={handleSubmit(onValid)}
-        text="Next"
+        onClick={chosenClubId !== "" ? handleSubmit(onValid) : null}
+        text="Create"
+        loading={loading}
+        disabled={chosenClubId !== "" ? null : isValid}
       />
+      
     </Container>
   );
 }

@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import PageTitle from "../../components/PageTitle";
 import FormError from "../../components/auth/FormError";
 import Input from "../../components/auth/Input";
 import Button from "../../components/auth/Button";
@@ -105,6 +106,8 @@ function NewClub() {
   };
   return (
     <Container>
+      <PageTitle title="Create Club" />
+      
       <Emblem><EmblemImg /></Emblem>
       <Notification>{location?.state?.message}</Notification>
       <form onSubmit={handleSubmit(onSubmitValid)}>

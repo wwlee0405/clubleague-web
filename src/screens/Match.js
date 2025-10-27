@@ -4,32 +4,11 @@ import MatchItem from "../components/match/MatchItem";
 import PageTitle from "../components/PageTitle";
 import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../components/shared";
-import { GAME_FRAGMENT } from "../fragments";
+import { MATCH_QUERY } from "../gql/sharedQuery";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
-const MATCH_QUERY = gql`
-  query seeMatch($offset: Int!) {
-    seeMatch(offset: $offset) {
-      id
-      user {
-        id
-        username
-        avatar
-      }
-      homeGame {
-        ...GameFragment
-      }
-      awayGame {
-        ...GameFragment
-      }
-      file
-    }
-  }
-  ${GAME_FRAGMENT}
-`;
 
 const CircleActionWrep = styled.div`
   margin: 10px;

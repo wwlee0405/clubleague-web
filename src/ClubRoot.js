@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Header from "./components/Header";
 import ClubItem from "./components/club/ClubItem";
 import ClubNav from "./components/ClubNav";
-import { CLUB_FRAGMENT, MEMBER_FRAGMENT, GAME_FRAGMENT } from "./fragments";
+import { CLUB_FRAGMENT, MEMBER_FRAGMENT } from "./gql/fragments";
 import { gql, useQuery } from "@apollo/client";
 import { useLocation } from "react-router-dom";
 import { HeaderStyle } from "./components/shared";

@@ -59,7 +59,7 @@ export const darkTheme = {
   grey03: "#DEE2E6",
   black: "#000",
 
-  headerColor: "#1C1C1D",
+  headerColor: "#252728",
   headerHight: "75px"
 };
 

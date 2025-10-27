@@ -55,7 +55,6 @@ export const FEED_MATCH = gql`
     awayGame {
       ...GameFragment
     }
-    createdAt
   }
   ${GAME_FRAGMENT}
 `;
@@ -119,29 +118,3 @@ export const ROOM_FRAGMENT = gql`
   }
 `;
 
-export const SEE_GAME = gql`
-  query seeGame($id: Int!) {
-    seeGame(id: $id) {
-      id
-      user {
-        id
-        avatar
-        username
-      }
-      file
-      caption
-      homeGame {
-        ...GameFragment
-        entryNumber
-        isEntry
-      }
-      awayGame {
-        ...GameFragment
-        entryNumber
-        isEntry
-      }
-      commentNumber
-    }
-  }
-  ${GAME_FRAGMENT}
-`;

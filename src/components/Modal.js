@@ -14,6 +14,7 @@ const ModalContainer = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  z-index: 1; 
 `;
 const ModalStyle = styled.div`
   width: 600px;

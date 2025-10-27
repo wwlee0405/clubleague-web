@@ -10,7 +10,7 @@ import AppointBoard from "../../components/club/AppointBoard";
 import UnappointBoard from "../../components/club/UnappointBoard";
 import TransferLeader from "../../components/club/TransferLeader";
 import UnjoinClub from "../../components/club/UnjoinClub";
-import { CLUB_FRAGMENT } from "../../fragments";
+import { CLUB_FRAGMENT } from "../../gql/fragments";
 
 const TOGGLE_WRITE_MUTATION = gql`
   mutation toggleWriteAuth($id: Int!) {
