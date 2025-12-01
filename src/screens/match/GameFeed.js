@@ -17,6 +17,7 @@ const SEE_GAME = gql`
       }
       file
       caption
+      date
       homeGame {
         ...GameFragment
         entryNumber

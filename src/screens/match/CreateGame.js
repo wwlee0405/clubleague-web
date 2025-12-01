@@ -14,8 +14,8 @@ import PageTitle from "../../components/PageTitle";
 import Button from "../../components/auth/Button";
 
 const CREATE_GAME_MUTATION = gql`
-  mutation createGame($clubId: Int!, $file: String, $caption: String) {
-    createGame(clubId: $clubId, file: $file, caption: $caption) {
+  mutation createGame($clubId: Int!, $file: String, $caption: String, $date: Date!) {
+    createGame(clubId: $clubId, file: $file, caption: $caption, date: $date) {
       error
       id
       ok
@@ -78,6 +78,21 @@ const ClubData = styled.div`
     background-color: ${(props) => props.theme.hover};
   }
 `;
+const DateInput = styled.input`
+  background-color: ${(props) => props.theme.cardContent};  
+  border-radius: 5px;
+  width: 100%;
+  color: ${(props) => props.theme.text};
+  padding: 5px;
+  border: 0.5px solid
+    ${(props) => (props.hasError ? "tomato" : props.theme.borderColor)};
+  
+  box-sizing: border-box;
+  &:focus {
+    border-color: rgb(38, 38, 38);
+  }
+`;
+
 const ModalWrapper = styled.div`
   align-items: center;
   padding: 5px 20px;
@@ -112,7 +127,7 @@ function CreateGame() {
     const {
       createGame: { ok, error },
     } = data;
-    const { caption } = getValues();
+    const { caption, date } = getValues();
     if (!ok) {
       return setError("result", {
         message: error,
@@ -120,7 +135,8 @@ function CreateGame() {
     }
     if (ok) {
       navigate(`/match`,{
-        caption
+        caption,
+        date,
       });
     }
   };
@@ -141,7 +157,7 @@ function CreateGame() {
     setChosenEmblem(emblem);
   };
 
-  const onValid = ({ file, caption }) => {
+  const onValid = ({ file, caption, date }) => {
     if (loading) {
       return;
     }
@@ -150,6 +166,7 @@ function CreateGame() {
         clubId: chosenClubId,
         caption,
         file,
+        date,
       },
     });
   };  
@@ -171,7 +188,12 @@ function CreateGame() {
             <TitleText>Date</TitleText>          
           </TitleWrapper>
           <div>
-            <TitleText>Date</TitleText>  
+            <DateInput 
+              {...register("date", {
+                valueAsDate: true,
+              })}
+              type="date" 
+            />
           </div>
         </Row>
 

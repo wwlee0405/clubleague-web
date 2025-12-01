@@ -136,33 +136,39 @@ function Home() {
     <div>
       <PageTitle title="Clubleague" />
       
-      <TitleWrep>
-        <Title>My Club</Title>
-        <Link to={`/create_club`}>
-          <Action>
-            <FontAwesomeIcon icon={faPlus} fontSize="20px" />
-          </Action>
-        </Link>
-      </TitleWrep>
-      <RowContainer>
-        {clubData?.seeMyClub?.map((myClubs) => (
-          <EmblemWrep>
-            <MyClubList key={myClubs.id} {...myClubs} />
-          </EmblemWrep>
-        ))}
-        <CircleActionWrep>
+      {/* myClub */}
+      <div>
+        <TitleWrep>
+          <Title>My Club</Title>
           <Link to={`/create_club`}>
-            <CircleAction><FontAwesomeIcon icon={faPlus} size="2x" /></CircleAction>
+            <Action>
+              <FontAwesomeIcon icon={faPlus} fontSize="20px" />
+            </Action>
           </Link>
-        </CircleActionWrep>
-      </RowContainer>
+        </TitleWrep>
+        <RowContainer>
+          {clubData?.seeMyClub?.map((myClubs) => (
+            <EmblemWrep>
+              <MyClubList key={myClubs.id} {...myClubs} />
+            </EmblemWrep>
+          ))}
+          <CircleActionWrep>
+            <Link to={`/create_club`}>
+              <CircleAction><FontAwesomeIcon icon={faPlus} size="2x" /></CircleAction>
+            </Link>
+          </CircleActionWrep>
+        </RowContainer>
+      </div>
 
-      <Title>My Schedule</Title>
-      <ColumnContainer>
-        {data?.seeMySched?.map((sched) => (
-          <MySchedItem key={sched.id} {...sched} />
-        ))}
-      </ColumnContainer>
+      {/* MySchedule */}
+      <div>
+        <Title>My Schedule</Title>
+        <ColumnContainer>
+          {data?.seeMySched?.map((sched) => (
+            <MySchedItem key={sched.id} {...sched} />
+          ))}
+        </ColumnContainer>
+      </div>
     </div>
   );
 }

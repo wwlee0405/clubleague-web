@@ -136,11 +136,16 @@ const CommentCount = styled(SubText)`
   font-size: 14px;
 `;
 
-function GameItem({ id, user, homeGame, awayGame, caption, commentNumber }) {
+function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }) {
   const { data } = useUser();
   const { EntryModal: HomeEntryModal, entryOpen: homeEntryOpen } = useEntryModal();
   const { EntryModal: AwayEntryModal, entryOpen: awayEntryOpen } = useEntryModal();
   
+  const dateToStamp = new Date(parseInt(date)).toDateString();
+  
+  console.log(date);
+  console.log(dateToStamp);
+
   return (
     <Container key={id}>
       <HeaderAvatar
@@ -270,6 +275,7 @@ function GameItem({ id, user, homeGame, awayGame, caption, commentNumber }) {
         />
         <CaptionData>
           <span>{caption}</span>
+          <CommentCount>{dateToStamp}</CommentCount>
         </CaptionData>
 
         <CommentContent>
@@ -289,6 +295,7 @@ GameItem.propTypes = {
     username: PropTypes.string.isRequired,
   }),
   caption: PropTypes.string,
+  date: PropTypes.object,
   homeGame: PropTypes.shape({
     id: PropTypes.number,
     entryNumber: PropTypes.number,
