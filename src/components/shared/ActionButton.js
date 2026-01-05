@@ -4,7 +4,6 @@ import styled from "styled-components";
 const ButtonTouchable = styled.div`
   border: none;
   border-radius: 5px;
-  margin-top: 12px;
   background-color: ${(props) => (props.buttonColor.main)};
   text-align: center;
   padding: 10px;

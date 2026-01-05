@@ -1,31 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 import { useLocation } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
-import { CLUB_FRAGMENT, MEMBER_FRAGMENT, GAME_FRAGMENT } from "../../gql/fragments";
+import { SEE_CLUB } from "../../gql/sharedQuery";
+import { GAME_FRAGMENT } from "../../gql/fragments";
 import ClubSchedItem from "../../components/club/ClubSchedItem";
 import styled from "styled-components";
 
-const JOIN_CLUB_MUTATION = gql`
-  mutation joinClub($clubId: Int!) {
-    joinClub(clubId: $clubId) {
-      ok
-      error
-      id
-    }
-  }
-`;
-export const SEE_CLUB = gql`
-  query seeClub($id: Int!) {
-    seeClub(id: $id) {
-      ...ClubFragment
-      clubMember {
-        ...MemberFragment
-      }
-    }
-  }
-  ${CLUB_FRAGMENT}
-  ${MEMBER_FRAGMENT}
-`;
 const SEE_CLUB_SCHED = gql`
   query seeClubSched($id: Int! ,$offset: Int!) {
     seeClubSched(id: $id, offset: $offset) {
@@ -106,7 +86,7 @@ function Clubhouse() {
     <Container>
       <PageTitle
         title={
-          loading ? "Loading..." : `A${data?.seeClub?.clubname}`
+          loading ? "Loading..." : `${data?.seeClub?.clubname}`
         }
       />
 
@@ -119,8 +99,11 @@ function Clubhouse() {
       )}
 
       <NoSched>
-          <BottomText>클럽에 일정이 없습니다.</BottomText>
-        </NoSched>
+        <BottomText>클럽에 일정이 없습니다.</BottomText>
+      </NoSched>
+      <NoSched>
+        <BottomText>클럽에 일정이 없습니다.</BottomText>
+      </NoSched>
     </Container>
   );
 }

@@ -10,7 +10,7 @@ import AppointBoard from "../../components/club/AppointBoard";
 import UnappointBoard from "../../components/club/UnappointBoard";
 import TransferLeader from "../../components/club/TransferLeader";
 import UnjoinClub from "../../components/club/UnjoinClub";
-import { CLUB_FRAGMENT } from "../../gql/fragments";
+import { SEE_JOINED_CLUB } from "../../gql/sharedQuery";
 
 const TOGGLE_WRITE_MUTATION = gql`
   mutation toggleWriteAuth($id: Int!) {
@@ -29,38 +29,6 @@ const TOGGLE_INVITE_MUTATION = gql`
       ok
     }
   }
-`;
-//const SEE_CLUB = gql`
-//  query seeClub($id: Int!) {
-//    seeClub(id: $id) {
-//      id
-//      clubname
-//      emblem
-//      clubLeader {
-//        id
-//      }
-//      writeAuth
-//      inviteAuth
-//    }
-//  }
-//`;
-
-const SEE_JOINED_CLUB = gql`
-  query seeJoinedClub($userId:Int!,$clubId: Int!) {
-    seeJoinedClub(userId: $userId,clubId: $clubId) {
-      id
-      boardAuth
-      user {
-        id
-      }
-      club {
-        ...ClubFragment
-        writeAuth
-        inviteAuth
-      }
-    }
-  }
-  ${CLUB_FRAGMENT}
 `;
 
 const Container = styled.div`
@@ -177,7 +145,6 @@ function ClubSetting() {
   console.log(data?.seeJoinedClub?.id);
   return (
     <div>
-      
       <Container>
         <Title>-클럽 기본 정보 관리-</Title>
 
@@ -277,7 +244,6 @@ function ClubSetting() {
           <UnjoinClub key={seeJoinedClubId} {...data_seeJoinedClub} />
         </Unjoin_Club>
       </Container>
-
     </div>
   );
 }

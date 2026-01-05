@@ -6,6 +6,8 @@ import styled from "styled-components";
 import useUser from "../../hooks/useUser";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
+import DateTime_Month from "../shared/DateTime_Month";
+import DateTime_DayOfWeek from "../shared/DateTime_DayOfWeek";
 
 const DELETE_GAME_MUTATION = gql`
   mutation deleteGame($id: Int!) {
@@ -98,7 +100,7 @@ const ClubName = styled(MainText)`
   overflow: hidden;
 `;
 
-function MatchItem({ id, user, homeGame, awayGame }) {
+function MatchItem({ id, user, homeGame, awayGame, date }) {
   const { data } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
   const updateDeleteGame = (cache, result) => {
@@ -120,7 +122,9 @@ function MatchItem({ id, user, homeGame, awayGame }) {
   const onDeleteClick = () => {
     deleteGameMutation();
   };
-  
+
+  const day = new Date(parseInt(date)).toString().slice(8, 10);
+  const time = new Date(parseInt(date)).toString().slice(16, 21);
   const homeClubname = homeGame.club.clubname;
   const homeEmblem = homeGame.club.emblem;
   const awayClubname = awayGame?.club.clubname;
@@ -143,10 +147,10 @@ function MatchItem({ id, user, homeGame, awayGame }) {
 
           <SchedContent>
             <SchedData>
-              <DateText>23</DateText>
+              <DateText>{day}</DateText>
               <DateList>
-                <WeekText>SUNDAY</WeekText>
-                <MonthText>OCT</MonthText>
+                <WeekText><DateTime_DayOfWeek date={date} /></WeekText>
+                <MonthText><DateTime_Month date={date} /></MonthText>
               </DateList>
             </SchedData>
             <div>
@@ -161,7 +165,7 @@ function MatchItem({ id, user, homeGame, awayGame }) {
               <ClubEmblem src={require('../../data/1ars.jpg')} />
             }
             <KickOffData>
-              <KickOffTime>10:00</KickOffTime>
+              <KickOffTime>{time}</KickOffTime>
               <Location 
                 numberOfLines={1}
               >
@@ -204,6 +208,7 @@ MatchItem.propTypes = {
   user: PropTypes.shape({
     username: PropTypes.string,
   }),
+  date: PropTypes.string,
   homeGame: PropTypes.shape({
     id: PropTypes.number,
     club: PropTypes.shape({

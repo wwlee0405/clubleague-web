@@ -12,6 +12,8 @@ import HeaderAvatar from "../shared/HeaderAvatar";
 import useUser from "../../hooks/useUser";
 import useEntryModal from '../../hooks/useEntryModal';
 import ProfileRow from "../profile/ProfileRow";
+import DateTime_Month from "../shared/DateTime_Month";
+import DateTime_DayOfWeek from "../shared/DateTime_DayOfWeek";
 
 const Container = styled(CardContainer)``;
 const ExtraContainer = styled(CardBottom)``;
@@ -28,7 +30,6 @@ const MatchDate = styled(MainText)`
 const MatchWeek = styled(MainText)`
   font-weight: 600;
   font-size: 20px;
-  margin-top: -6px;
 `;
 const GameContent = styled.div`
   display: flex;
@@ -141,11 +142,11 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
   const { EntryModal: HomeEntryModal, entryOpen: homeEntryOpen } = useEntryModal();
   const { EntryModal: AwayEntryModal, entryOpen: awayEntryOpen } = useEntryModal();
   
-  const dateToStamp = new Date(parseInt(date)).toDateString();
-  
-  console.log(date);
-  console.log(dateToStamp);
-
+  //Mon Dec 01 2025
+  //const year = dateString.slice(11, 15);  "2025" 
+  //Thu Dec 25 2025 10:10:00 GMT+0900 (한국 표준시)
+  const day = new Date(parseInt(date)).toString().slice(8, 10);
+  const time = new Date(parseInt(date)).toString().slice(16, 21);
   return (
     <Container key={id}>
       <HeaderAvatar
@@ -160,8 +161,8 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
      
       <ExtraContainer>
         <Dates>
-          <MatchDate>APR 23</MatchDate>
-          <MatchWeek>Saturday</MatchWeek>
+          <MatchDate><DateTime_Month date={date} /> {day}</MatchDate>
+          <MatchWeek><DateTime_DayOfWeek date={date} /></MatchWeek>
         </Dates>
 
         <GameContent>
@@ -174,7 +175,7 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
             <ClubName>{homeGame?.club.clubname}</ClubName>
           </ClubData>
           <KickOffData>
-            <KickOffTime>10:00</KickOffTime>
+            <KickOffTime>{time}</KickOffTime>
             <Location>Santiago Bernabéu dkndkfnbkdfnbkfjdnb</Location>
           </KickOffData>
           {awayGame?.id ? (
@@ -206,7 +207,6 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
             <TimeLocation>Camp Nou</TimeLocation>
           </TimeLocationData>
         </TimeLocationContent>
-
 
         <EntryContent>
           <Entry onClick={homeEntryOpen}>          
@@ -275,7 +275,6 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
         />
         <CaptionData>
           <span>{caption}</span>
-          <CommentCount>{dateToStamp}</CommentCount>
         </CaptionData>
 
         <CommentContent>
@@ -295,7 +294,7 @@ GameItem.propTypes = {
     username: PropTypes.string.isRequired,
   }),
   caption: PropTypes.string,
-  date: PropTypes.object,
+  date: PropTypes.string,
   homeGame: PropTypes.shape({
     id: PropTypes.number,
     entryNumber: PropTypes.number,

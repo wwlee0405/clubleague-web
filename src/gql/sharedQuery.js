@@ -1,5 +1,36 @@
 import { gql } from "@apollo/client";
-import { GAME_FRAGMENT } from "./fragments";
+import { CLUB_FRAGMENT, MEMBER_FRAGMENT, GAME_FRAGMENT } from "./fragments";
+
+export const SEE_CLUB = gql`
+  query seeClub($id: Int!) {
+    seeClub(id: $id) {
+      ...ClubFragment
+      clubMember {
+        ...MemberFragment
+      }
+    }
+  }
+  ${CLUB_FRAGMENT}
+  ${MEMBER_FRAGMENT}
+`;
+
+export const SEE_JOINED_CLUB = gql`
+  query seeJoinedClub($userId:Int!,$clubId: Int!) {
+    seeJoinedClub(userId: $userId,clubId: $clubId) {
+      id
+      boardAuth
+      user {
+        id
+      }
+      club {
+        ...ClubFragment
+        writeAuth
+        inviteAuth
+      }
+    }
+  }
+  ${CLUB_FRAGMENT}
+`;
 
 export const MATCH_QUERY = gql`
   query seeMatch($offset: Int!) {
@@ -17,6 +48,7 @@ export const MATCH_QUERY = gql`
         ...GameFragment
       }
       file
+      date
     }
   }
   ${GAME_FRAGMENT}

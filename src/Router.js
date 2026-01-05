@@ -18,6 +18,8 @@ import GameFeed from "./screens/match/GameFeed";
 import Root from "./Root";
 import ClubRoot from "./ClubRoot";
 
+import NotFound from "./screens/NotFound";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
@@ -25,9 +27,8 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="match" element={<Match />} />
 
-
-        <Route path="/:username" element={<Me />} />
-        <Route path="/users/:username" element={<Profile />} />
+        <Route path=":username" element={<Me />} />
+        <Route path="users/:username" element={<Profile />} />
         <Route path="photo" element={<PhotoTest />} />
         <Route path="outcluber" element={<Outcluber />} />
         <Route path="notification" element={<Notification />} />
@@ -35,13 +36,14 @@ const router = createBrowserRouter(
         <Route path="create_club" element={<NewClub />} />
         <Route path="create_game" element={<CreateGame />} />
 
-        
+        <Route path="error" element={<NotFound />} />
       </Route>
+      
       <Route path= "/" element={<ClubRoot/>}>
         <Route path="club/:clubname" element={<Clubhouse />} />
         <Route path="club/:clubname/calendar" element={<ClubCalendar />} />
         <Route path="club/:clubname/member" element={<ClubMember />} />
-        <Route path="club/:clubname/setting" element={<ClubSetting />} />
+        <Route path="club/:clubname/setting" element={<ClubSetting /> } />
       </Route>
       <Route path="match/:id" element={<GameFeed />} />
     </Route>

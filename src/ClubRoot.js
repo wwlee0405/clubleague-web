@@ -1,42 +1,24 @@
 import { useState } from "react";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import useUser from "./hooks/useUser";
 import Header from "./components/Header";
 import ClubItem from "./components/club/ClubItem";
-import ClubNav from "./components/ClubNav";
-import { CLUB_FRAGMENT, MEMBER_FRAGMENT } from "./gql/fragments";
-import { gql, useQuery } from "@apollo/client";
-import { useLocation } from "react-router-dom";
+import JoinNav from "./components/club/JoinNav";
+import UnjoinNav from "./components/club/UnjoinNav";
+import { SEE_CLUB, SEE_JOINED_CLUB } from "./gql/sharedQuery";
 import { HeaderStyle } from "./components/shared";
-import useUser, { ME_QUERY } from "./hooks/useUser";
 
-const ROOT_SEE_CLUB = gql`
-  query seeClub($id: Int!) {
-    seeClub(id: $id) {
-      ...ClubFragment
-      clubMember {
-        ...MemberFragment
-      }
-    }
-  }
-  ${CLUB_FRAGMENT}
-  ${MEMBER_FRAGMENT}
-`;
-
-const ROOT_SEE_JOINED_CLUB = gql`
-  query seeJoinedClub($userId:Int!,$clubId: Int!) {
-    seeJoinedClub(userId: $userId,clubId: $clubId) {
+const JOIN_CLUB_MUTATION = gql`
+  mutation joinClub($clubId: Int!) {
+    joinClub(clubId: $clubId) {
+      ok
+      error
       id
-      boardAuth
-      user {
-        id
-      }
-      club {
-        ...ClubFragment
-      }
     }
   }
-  ${CLUB_FRAGMENT}
 `;
 
 const Container = styled.div`
@@ -46,11 +28,6 @@ const ClubContainer = styled(HeaderStyle)``;
 const ClubInfo = styled.div`
   margin: 0 auto;
   max-width: 615px;
-
-  //background-color: ${(props) => props.theme.cardHeader};
-  //border-top-left-radius: 15px;
-  //border-top-right-radius: 15px;
-  //border: 1px solid ${(props) => props.theme.border};
 `;
 const StickyContainer = styled(HeaderStyle)`
   position: sticky;
@@ -71,41 +48,114 @@ const Content = styled.main`
 `;
 
 function ClubRoot() {
+  const navigate = useNavigate();
   const { state } = useLocation();
-  const { data, loading } = useQuery(ROOT_SEE_JOINED_CLUB, {
+  const { data } = useQuery(SEE_CLUB, {
+    variables: {
+      id: state?.clubId,
+    },
+  });
+  const { data: joinData, refetch } = useQuery(SEE_JOINED_CLUB, {
     variables: {
       clubId: state?.clubId,
       userId: state?.userId,
     },
   });
-  
-  const noSticky = <ClubNav key={data?.seeJoinedClub.id} {...data?.seeJoinedClub} />;
+  const { data: userData } = useUser();
+  const joinClubUpdate = (cache, result) => {
+    const {
+      data: {
+        joinClub: { ok, id },
+      },
+    } = result;
+    if (ok && userData?.me) {
+      const newMember = {
+        __typename: "Member",
+        createdAt: Date.now() + "",
+        id,
+        user: {
+          ...userData.me,
+        },
+        club: {
+          isJoined: true,
+        },
+      };
+      const newCacheMember = cache.writeFragment({
+        data: newMember,
+        fragment: gql`
+          fragment BSName on Member {
+            id
+            user {
+              username
+              avatar
+            }
+            club {
+              isJoined
+            }
+            createdAt
+          }
+        `,
+      });
+      cache.modify({
+        id: `Club:${state?.clubId}`,
+        fields: {
+          clubMember(prev) {
+            return [...prev, newCacheMember];
+          },
+          totalMember(prev) {
+            return prev + 1;
+          },
+        },
+      });
+      navigate(`/club/${data?.seeClub?.clubname}`, {
+        state: { clubId: state?.clubId, userId: userData?.me.id },
+      });
+    };
+  }
+  const [joinClub] = useMutation(JOIN_CLUB_MUTATION, {
+    refetchQueries: [SEE_JOINED_CLUB],
+    variables: {
+      clubId: state?.clubId
+    },
+    update: joinClubUpdate,
+  });
+  const joinedSticky = <JoinNav {...joinData?.seeJoinedClub} />;
+  const unjoinedSticky = (
+    <UnjoinNav 
+      title={data?.seeClub?.clubname} 
+      onClick={joinClub} 
+    />
+  );
   const [stickyNav, setStickyNav] = useState({
-    Sticky : noSticky
+    Sticky : joinedSticky
 
   });
   const updateSticky = () => {
     setStickyNav(previousState => {
-      return { ...previousState, Sticky: yesSticky }
+      return { ...previousState, Sticky: unjoinedSticky }
     });
   }
-  const yesSticky = <span>ysesfs</span>;
-  
   return (
     <Container>
       <Header />
       <ClubContainer>
         <ClubInfo>
-          <ClubItem key={data?.seeJoinedClub.id} {...data?.seeJoinedClub} />
+          <ClubItem key={data?.seeClub.id} {...data?.seeClub} />
         </ClubInfo>
       </ClubContainer>
+  
       <StickyContainer>
-        <ClubNavItem>
-          {stickyNav ? noSticky : yesSticky}       
+        <ClubNavItem> 
+          {data?.seeClub?.isJoined === false ? unjoinedSticky : joinedSticky }
         </ClubNavItem>
       </StickyContainer>
-      <Content> 
-        <Outlet />
+
+      <Content>
+        {data?.seeClub?.isJoined === false ? 
+          <div>unjoin_Club_Close</div> 
+          : 
+          <Outlet />
+        }
       </Content>
     </Container>
   );

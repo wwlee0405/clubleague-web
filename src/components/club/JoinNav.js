@@ -17,7 +17,7 @@ const ClubNavItem = styled.div`
   justify-content: center;
 `;
 
-function ClubNav({
+function JoinNav({
   user,
   club,
 }) {
@@ -57,4 +57,4 @@ function ClubNav({
     </Container>
   );
 }
-export default ClubNav;
+export default JoinNav;

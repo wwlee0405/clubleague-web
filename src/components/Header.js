@@ -28,9 +28,10 @@ const SEARCH_CLUBS = gql`
       clubArea
       emblem
       totalMember
-      clubLeader{
+      clubLeader {
         username
       }
+      isJoined
     }
   }
 `;
@@ -233,7 +234,7 @@ function Header() {
                   searchData?.searchClubs?.length === 0 ? (
                     <SearchModalWrep><SearchModalText>Could not find anything.</SearchModalText></SearchModalWrep>
                   ) : (
-                    searchData?.searchClubs?.map((club) => (
+                    searchData?.searchClubs?.map((club) => (     
                       <ProfileRow 
                         key={club?.id}
                         profileLink={`/club/${club?.clubname}`}
@@ -255,26 +256,26 @@ function Header() {
               </CursorIcon>
             </IconBox>
             <CreateModal
-              modalWidth={{ main: "200px" }}
+              modalWidth={{ main: "170px" }}
               marginTop={{ main: "57px" }}
               marginLeft={{ main: "135px" }}
             >
               <CreateModalContainer>
-                <CreateModalTextWrep>
-                  <Link to={`/create_game`}>
+                <Link to={`/create_game`}>
+                  <CreateModalTextWrep>
                     <CreateModalText>Create Match</CreateModalText>
-                  </Link>
-                </CreateModalTextWrep>
-                <CreateModalTextWrep>
-                  <Link to={`/create_game`}>
+                  </CreateModalTextWrep>
+                </Link>
+                <Link to={`/create_game`}>
+                  <CreateModalTextWrep>  
                     <CreateModalText>Create Outcluber</CreateModalText>
-                  </Link>
-                </CreateModalTextWrep>
-                <CreateModalTextWrep>
-                  <Link to={`/create_club`}>
+                  </CreateModalTextWrep>
+                </Link>
+                <Link to={`/create_club`}>
+                  <CreateModalTextWrep>
                     <CreateModalText>Create Club</CreateModalText>
-                  </Link>
-                </CreateModalTextWrep>
+                  </CreateModalTextWrep>
+                </Link>
               </CreateModalContainer>
             </CreateModal>
           </>

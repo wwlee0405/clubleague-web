@@ -192,7 +192,7 @@ function CreateGame() {
               {...register("date", {
                 valueAsDate: true,
               })}
-              type="date" 
+              type="datetime-local" 
             />
           </div>
         </Row>
@@ -202,7 +202,10 @@ function CreateGame() {
             <TitleText>time</TitleText>          
           </TitleWrapper>
           <div>
-            <TitleText>time</TitleText>  
+            <DateInput
+              {...register("time")} 
+              type="time" 
+            />
           </div>
         </Row>
 
