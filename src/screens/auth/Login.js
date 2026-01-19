@@ -8,16 +8,16 @@ import {
   faFacebookSquare,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
-import { logUserIn } from "../apollo";
-import AuthLayout from "../components/auth/AuthLayout";
-import Input from "../components/auth/Input";
-import Button from "../components/auth/Button";
-import FormBox from "../components/auth/FormBox";
-import FormError from "../components/auth/FormError";
-import BottomBox from "../components/auth/BottomBox";
-import Separator from "../components/auth/Separator";
-import PageTitle from "../components/PageTitle";
-import routes from "../routes";
+import { logUserIn } from "../../apollo";
+import AuthLayout from "../../components/auth/AuthLayout";
+import Input from "../../components/auth/Input";
+import Button from "../../components/auth/Button";
+import FormBox from "../../components/auth/FormBox";
+import FormError from "../../components/auth/FormError";
+import BottomBox from "../../components/auth/BottomBox";
+import Separator from "../../components/auth/Separator";
+import PageTitle from "../../components/PageTitle";
+import routes from "../../routes";
 
 const FacebookLogin = styled.div`
   color: #385285;

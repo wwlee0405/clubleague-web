@@ -14,7 +14,6 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.cardHeader};
   border-radius: 15px;
   border: 1px solid ${(props) => props.theme.border};
-  width: 350px;
   padding: 8px;
   margin-bottom: 10px;
 `;
@@ -43,6 +42,7 @@ function CommentItem({ id, user, payload }) {
           avatar={user.avatar}
           username={user.username}
         />
+        
         <CommentC>fjsoijf</CommentC>
       </Top>
       <CommentCaption>{payload}</CommentCaption>

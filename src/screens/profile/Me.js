@@ -1,9 +1,8 @@
-import { gql } from "@apollo/client";
-import PageTitle from "../components/PageTitle";
-import useUser from "../hooks/useUser";
-import UserProfile from "../components/profile/UserProfile";
+import PageTitle from "../../components/PageTitle";
+import useUser from "../../hooks/useUser";
+import UserProfile from "../../components/profile/UserProfile";
 import styled from "styled-components";
-import UserSetting from "../components/profile/UserSetting";
+import UserSetting from "../../components/profile/UserSetting";
 
 const Row = styled.div`
   display: flex;

@@ -1,8 +1,9 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import Home from "./screens/Home";
 import Match from "./screens/Match";
-import Me from "./screens/Me";
-import Profile from "./screens/Profile";
+import Me from "./screens//profile/Me";
+import Profile from "./screens/profile/Profile";
+import UserSettings from "./screens/profile/UserSettings";
 import PhotoTest from "./screens/PhotoTest";
 import Outcluber from "./screens/Outcluber";
 import Notification from "./screens/Notification";
@@ -29,6 +30,8 @@ const router = createBrowserRouter(
 
         <Route path=":username" element={<Me />} />
         <Route path="users/:username" element={<Profile />} />
+        
+
         <Route path="photo" element={<PhotoTest />} />
         <Route path="outcluber" element={<Outcluber />} />
         <Route path="notification" element={<Notification />} />
@@ -46,6 +49,7 @@ const router = createBrowserRouter(
         <Route path="club/:clubname/setting" element={<ClubSetting /> } />
       </Route>
       <Route path="match/:id" element={<GameFeed />} />
+      <Route path="/:username/settings/profile" element={<UserSettings />} />
     </Route>
   )
 );

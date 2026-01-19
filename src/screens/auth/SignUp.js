@@ -4,15 +4,15 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { useForm } from "react-hook-form";
-import AuthLayout from "../components/auth/AuthLayout";
-import Input from "../components/auth/Input";
-import Button from "../components/auth/Button";
-import FormBox from "../components/auth/FormBox";
-import BottomBox from "../components/auth/BottomBox";
-import Separator from "../components/auth/Separator";
-import { FatLink } from "../components/shared";
-import PageTitle from "../components/PageTitle";
-import routes from "../routes";
+import AuthLayout from "../../components/auth/AuthLayout";
+import Input from "../../components/auth/Input";
+import Button from "../../components/auth/Button";
+import FormBox from "../../components/auth/FormBox";
+import BottomBox from "../../components/auth/BottomBox";
+import Separator from "../../components/auth/Separator";
+import { FatLink } from "../../components/shared";
+import PageTitle from "../../components/PageTitle";
+import routes from "../../routes";
 
 const HeaderContainer = styled.div`
   display: flex;

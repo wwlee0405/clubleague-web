@@ -3,10 +3,13 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Button from "../auth/Button";
-import { FatText, SubText } from "../shared";
+import { FatText, SubText, MainText } from "../shared";
 
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import useModal from '../../hooks/useModal';
+import EditProfile from "./EditProfile";
 
 const ColumnContainer = styled.div`
   display: flex;
@@ -106,6 +109,16 @@ const ClubEmblem = styled.img`
 const ClubName = styled(FatText)`
   padding-top: 10px;
 `;
+const ModalText = styled(MainText)`
+  font-size: 17px;
+`;
+const ModalWrep = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 100px; 
+`;
 
 function UserProfile({
     id,
@@ -114,22 +127,32 @@ function UserProfile({
     fullName,
     isMe,
     userMember,
-  }) {    
+  }) {
+    const { Modal: Edit_Profile, open: edit_Profile_Open, close: edit_Profile_Close } = useModal();    
     return (
       <ColumnContainer>
         <RowContainer>
-          <AvatarWrep>
-            <Avatar>{avatar ? <Img src={avatar} /> : <UserFont><FontAwesomeIcon icon={faUser} size="6x" style={{ color: "#2e8b57" }} /></UserFont>}</Avatar>
+          <AvatarWrep >
+            <Link 
+              to={`/${username}/settings/profile`} 
+            >
+              <Avatar>{avatar ? <Img src={avatar} /> : <UserFont><FontAwesomeIcon icon={faUser} size="6x" style={{ color: "#2e8b57" }} /></UserFont>}</Avatar>
+            </Link>
           </AvatarWrep>
           <Column>
             <Row>
               <Username>{username}</Username>
               {isMe ? 
-                <ProfileBtn onClick={null}>Edit Profile</ProfileBtn>
+                <ProfileBtn onClick={edit_Profile_Open}>Edit Profile</ProfileBtn>
                 :
                 null
               }
             </Row>
+
+            <Edit_Profile title="Edit Profile">              
+              <EditProfile onClose={edit_Profile_Close} />              
+            </Edit_Profile>
+
             <Row>
               <List>
                 <Item>
@@ -167,7 +190,7 @@ function UserProfile({
             {userMember?.map((joined) => (
               <Link 
                 to={`/club/${joined?.club?.clubname}`} 
-                state={{ clubId: joined?.club?.id, userId: id }}
+                state={{ clubId: joined?.club.id, userId: id }}
               >
                 <ClubTeam>
                   <ClubEmblem src={require('../../data/2bar.jpg')} />

@@ -83,7 +83,7 @@ function ClubRoot() {
       const newCacheMember = cache.writeFragment({
         data: newMember,
         fragment: gql`
-          fragment BSName on Member {
+          fragment NewMember on Member {
             id
             user {
               username
@@ -135,6 +135,7 @@ function ClubRoot() {
       return { ...previousState, Sticky: unjoinedSticky }
     });
   }
+  console.log(data?.seeClub.isJoined);
   return (
     <Container>
       <Header />
@@ -146,12 +147,12 @@ function ClubRoot() {
   
       <StickyContainer>
         <ClubNavItem> 
-          {data?.seeClub?.isJoined === false ? unjoinedSticky : joinedSticky }
+          {data?.seeClub.isJoined === false ? unjoinedSticky : joinedSticky }
         </ClubNavItem>
       </StickyContainer>
 
       <Content>
-        {data?.seeClub?.isJoined === false ? 
+        {data?.seeClub.isJoined === false ? 
           <div>unjoin_Club_Close</div> 
           : 
           <Outlet />

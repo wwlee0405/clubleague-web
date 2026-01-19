@@ -3,26 +3,20 @@ import { gql, useQuery } from "@apollo/client";
 import Photo from "../components/feed/Photo";
 import PageTitle from "../components/PageTitle";
 
-const FEED_QUERY = gql`
-  query seeFeed($offset: Int!) {
-    seeFeed(offset: $offset) {
+const SEE_NOTI = gql`
+  query seeNotification($offset: Int!) {
+    seeNotification(offset: $offset) {
       id
       user {
         username
-        avatar
       }
-      file
-      caption
-      likes
-      createdAt
-      isMine
-      isLiked
+      payload
     }
   }
 `;
 
 function Notification() {
-  const { data } = useQuery(FEED_QUERY, {
+  const { data } = useQuery(SEE_NOTI, {
     variables: {
       offset: 0,
     },
@@ -30,8 +24,8 @@ function Notification() {
   return (
     <div>
       <PageTitle title="Notification | Clubleague" />
-      {data?.seeFeed?.map((photo) => (
-        <Photo key={photo.id} {...photo} />
+      {data?.seeNotification?.map((noti) => (
+        <div>{noti.user.username}..@@..{noti.payload}</div>
       ))}
     </div>
   );

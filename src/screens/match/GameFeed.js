@@ -60,26 +60,25 @@ const SEE_GAME_COMMENTS = gql`
   ${COMMENT_FRAGMENT}
 `;
 
-const Background = styled.div`
-  background-color: ${(props) => props.theme.bgColor};
-`;
-const Container = styled.div`
+const Form = styled.div`
+  // 모바일 (767px 이하) 스타일
+
   margin: 0 auto;
-  max-width: 925px;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-`;
-const WrapComment = styled.div`
+  justify-content: center;
   display: flex;
   flex-direction: column;
+  background-color: ${(props) => props.theme.bgColor};
 
-
-  padding-left: 20px;
+  // 데스크톱 (768px 이상) 스타일
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+`;
+const Container = styled.div`
+  padding: 10px;
 `;
 
-function GameFeed({ route }) {
+function GameFeed() {
   const { state } = useLocation();
   const { data } = useQuery(SEE_GAME, {
     variables: {
@@ -92,19 +91,19 @@ function GameFeed({ route }) {
     },
   });
   return (
-    <Background>
+    <Form>
 
       <Container>
-        <GameItem key={data?.seeGame.id} {...data?.seeGame} />
-        
-        <WrapComment>
-          {dataComment?.seeGame?.comments?.map((comment) => (
-            <CommentItem key={comment.id} {...comment} />
-          ))}
-        </WrapComment>
+        <GameItem key={data?.seeGame.id} {...data?.seeGame} />       
       </Container>
 
-    </Background>
+      <Container>
+        {dataComment?.seeGame?.comments?.map((comment) => (
+          <CommentItem key={comment.id} {...comment} />
+        ))}
+      </Container>
+
+    </Form>
   );
 }
 export default GameFeed;
