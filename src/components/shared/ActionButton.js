@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ButtonTouchable = styled.div`
   border: none;
   border-radius: 5px;
-  background-color: ${(props) => (props.buttonColor.main)};
+  background-color: ${(props) => (props.buttoncolor.main)};
   text-align: center;
   padding: 10px;
   font-weight: 600;
@@ -13,34 +13,34 @@ const ButtonTouchable = styled.div`
   cursor: pointer;
 `;
 const ButtonText = styled.span`
-  color: ${(props) => (props.textColor.main)};
+  color: ${(props) => (props.textcolor.main)};
   text-align: center;
 `;
 ButtonTouchable.defaultProps = {
-  buttonColor: {
+  buttoncolor: {
     main: (props) => props.theme.blue
   }
 }
 ButtonText.defaultProps = {
-  textColor: {
+  textcolor: {
     main: (props) => props.theme.white
   }
 }
 
 export default function ActionButton({
   onClick,
-  buttonColor,
+  boxColor,
   disabled,
   loading,
-  textColor,
+  textcolor,
   text,
 }) {
   return (
-    <ButtonTouchable onClick={onClick} buttonColor={buttonColor} disabled={disabled}>
+    <ButtonTouchable onClick={onClick} buttoncolor={boxColor} disabled={disabled}>
       {loading ? (
         <OrbitProgress color="white" style={{ fontSize: "2px" }} />
       ) : (
-        <ButtonText textColor={textColor}>{text}</ButtonText>
+        <ButtonText textcolor={textcolor}>{text}</ButtonText>
       )}
     </ButtonTouchable>
   );

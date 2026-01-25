@@ -167,7 +167,7 @@ function MatchItem({ id, user, homeGame, awayGame, date }) {
             <KickOffData>
               <KickOffTime>{time}</KickOffTime>
               <Location 
-                numberOfLines={1}
+                numberoflines={1}
               >
                 Santiago Bernabéu
               </Location>

@@ -26,8 +26,8 @@ function UnjoinNav({ title, onClick }) {
       <NavBtn>
         <ActionButton
           onClick={onClick}
-          buttonColor={{ main: (props) => props.theme.symbolColor }}
-          textColor={{ main : (props) => props.theme.white }}
+          boxColor={{ main: (props) => props.theme.symbolColor }}
+          textcolor={{ main : (props) => props.theme.white }}
           text="Join Club"
         />
       </NavBtn> 

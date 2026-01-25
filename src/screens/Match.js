@@ -64,7 +64,7 @@ function Match() {
 
       <CircleActionWrep>
         <Link to={null}>
-          <CircleAction><FontAwesomeIcon icon={faPlus} size="x" /></CircleAction>
+          <CircleAction><FontAwesomeIcon icon={faPlus} size="1x" /></CircleAction>
         </Link>
       </CircleActionWrep>
 

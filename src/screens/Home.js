@@ -148,8 +148,8 @@ function Home() {
         </TitleWrep>
         <RowContainer>
           {clubData?.seeMyClub?.map((myClubs) => (
-            <EmblemWrep>
-              <MyClubList key={myClubs.id} {...myClubs} />
+            <EmblemWrep key={myClubs.id}>
+              <MyClubList {...myClubs} />
             </EmblemWrep>
           ))}
           <CircleActionWrep>

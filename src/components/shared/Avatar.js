@@ -14,6 +14,6 @@ const Img = styled.img`
 `;
 
 function Avatar({ url = "", lg = false }) {
-  return <SAvatar lg={lg}>{url !== "" ? <Img src={url} /> : null}</SAvatar>;
+  return <SAvatar lg={lg.toString()}>{url !== "" ? <Img src={url} /> : null}</SAvatar>;
 }
 export default Avatar;

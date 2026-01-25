@@ -64,7 +64,7 @@ function TransferLeader({ onClose }) {
   const { data: userData } = useUser();
   const [chosenLeaderId, setChosenLeaderId] = useState("");
   const [chosenLeaderName, setChosenLeaderName] = useState("");
-    const [ , setOnCloseModal] = useState("");
+  const [ , setOnCloseModal] = useState("");
   const { data } = useQuery(SEE_CLUBMEMBER, {
     variables: {
       clubId: state?.clubId,
@@ -155,8 +155,8 @@ function TransferLeader({ onClose }) {
         {chosenLeaderId === "" ? (
             <ActionButton
               onClick={null}
-              buttonColor={{ main: (props) => props.theme.grey03 }}
-              textColor={{ main: (props) => props.theme.black }}
+              boxColor={{ main: (props) => props.theme.grey03 }}
+              textcolor={{ main: (props) => props.theme.black }}
               text="리더양도"
             />
           ) : (
@@ -165,8 +165,8 @@ function TransferLeader({ onClose }) {
                 transferLeader();
                 closeButton(onClose); 
               }}
-              buttonColor={{ main: (props) => props.theme.blue }}
-              textColor={{ main: (props) => props.theme.white }}
+              boxColor={{ main: (props) => props.theme.blue }}
+              textcolor={{ main: (props) => props.theme.white }}
               text="리더양도"
             />
           )

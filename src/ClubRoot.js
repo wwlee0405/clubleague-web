@@ -113,11 +113,11 @@ function ClubRoot() {
     };
   }
   const [joinClub] = useMutation(JOIN_CLUB_MUTATION, {
-    refetchQueries: [SEE_JOINED_CLUB],
     variables: {
       clubId: state?.clubId
     },
     update: joinClubUpdate,
+    refetchQueries: [SEE_JOINED_CLUB],
   });
   const joinedSticky = <JoinNav {...joinData?.seeJoinedClub} />;
   const unjoinedSticky = (

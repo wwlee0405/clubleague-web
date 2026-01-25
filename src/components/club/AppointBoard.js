@@ -160,8 +160,8 @@ function AppointBoard({ onClose }) {
         {chosenMemberId === "" ? (
             <ActionButton
               onClick={null}
-              buttonColor={{ main: (props) => props.theme.grey03 }}
-              textColor={{ main: (props) => props.theme.black }}
+              boxColor={{ main: (props) => props.theme.grey03 }}
+              textcolor={{ main: (props) => props.theme.black }}
               text="임원임명"
             />
           ) : (

@@ -36,7 +36,7 @@ const SEARCH_CLUBS = gql`
   }
 `;
 
-const SHeader = styled(HeaderStyle)`
+const HeaderContainer = styled(HeaderStyle)`
   position: sticky;
   z-index: 10;
   top: 0;
@@ -80,6 +80,7 @@ const SearchModalContainer = styled.div`
   padding: 5px 10px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.cardContent};
+  width: 300px;
 `;
 const SearchModalHeader = styled.div`
   display: flex;
@@ -100,6 +101,9 @@ const CreateModalContainer = styled.div`
   border-radius: 10px;
   justify-content: center;
   background-color: ${(props) => props.theme.cardContent};
+  width: 170px;
+  margin-top: 57px;
+  margin-left: 135px;
 `;
 const CreateModalTextWrep = styled.div`
   padding: 8px 20px;
@@ -114,6 +118,10 @@ const CreateModalText = styled(MainText)`
 `;
 const CursorIcon = styled.div`
   cursor: pointer;
+`;
+const IconsContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 const Icon = styled.span`
   margin-left: 20px;
@@ -162,24 +170,12 @@ const IconBackup = styled.span`
   }
 
 `;
-
-const Btn = styled.span`
-  background-color: ${(props) => props.theme.accent};
-  color: white;
-  border-radius: 4px;
-  padding: 5px 15px;
-  font-weight: 600;
-`;
 const Button = styled.span`
   background-color: ${(props) => props.theme.accent};
   border-radius: 4px;
   padding: 4px 15px;
   color: white;
   font-weight: 600;
-`;
-const IconsContainer = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 function Header() {
@@ -200,7 +196,7 @@ function Header() {
     });
   };
   return (
-    <SHeader>
+    <HeaderContainer>
       <Wrapper>
         <Row>
           <FontAwesomeIcon icon={faInstagram} size="3x" />
@@ -255,11 +251,7 @@ function Header() {
                 <FontAwesomeIcon icon={faPlus} fontSize="18px" /> 
               </CursorIcon>
             </IconBox>
-            <CreateModal
-              modalWidth={{ main: "170px" }}
-              marginTop={{ main: "57px" }}
-              marginLeft={{ main: "135px" }}
-            >
+            <CreateModal>
               <CreateModalContainer>
                 <Link to={`/create_game`}>
                   <CreateModalTextWrep>
@@ -299,7 +291,7 @@ function Header() {
               <Icon>
                 <Link to={routes.outcluber}>
                   <FontAwesomeIcon icon={faPaperPlane} fontSize="22px" />
-                  <spna>outcluber</spna>
+                  <span>outcluber</span>
                 </Link>
               </Icon>
               <Icon>
@@ -326,7 +318,7 @@ function Header() {
           )}
         </Row>
       </Wrapper>
-    </SHeader>
+    </HeaderContainer>
   );
 }
 export default Header;

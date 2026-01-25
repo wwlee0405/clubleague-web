@@ -147,8 +147,8 @@ function UnappointBoard({ onClose }) {
         {chosenBoardId === "" ? (
             <ActionButton
               onClick={null}
-              buttonColor={{ main: (props) => props.theme.grey03 }}
-              textColor={{ main: (props) => props.theme.black }}
+              boxColor={{ main: (props) => props.theme.grey03 }}
+              textcolor={{ main: (props) => props.theme.black }}
               text="임원해제"
             />
           ) : (
@@ -157,8 +157,8 @@ function UnappointBoard({ onClose }) {
                 unappointBoard();
                 closeButton(onClose);
               }}
-              buttonColor={{ main: (props) => props.theme.blue }}
-              textColor={{ main: (props) => props.theme.white }}
+              boxColor={{ main: (props) => props.theme.blue }}
+              textcolor={{ main: (props) => props.theme.white }}
               text="임원해제"
             />
           )

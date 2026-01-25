@@ -94,7 +94,7 @@ function GameFeed() {
     <Form>
 
       <Container>
-        <GameItem key={data?.seeGame.id} {...data?.seeGame} />       
+        <GameItem key={data?.seeGame.id} {...data?.seeGame} />
       </Container>
 
       <Container>

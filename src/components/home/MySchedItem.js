@@ -103,10 +103,10 @@ const Location = styled(SubText)`
   font-weight: 600;
   padding-left: 10px;
 `;
-const buttonColor = {
+const buttoncolor = {
   main: (props) => props.theme.blue
 };
-const textColor = {
+const textcolor = {
   main: (props) => props.theme.white
 };
 
@@ -179,8 +179,8 @@ function MySchedItem({ id, club, entryNumber, isEntry, loading }) {
 
           <ActionButton
             onClick={toggleEntry}
-            buttonColor={isEntry ? { main: (props) => props.theme.grey03 } : buttonColor}
-            textColor={isEntry ? { main : (props) => props.theme.black } : textColor}
+            boxColor={isEntry ? { main: (props) => props.theme.grey03 } : buttoncolor}
+            textcolor={isEntry ? { main : (props) => props.theme.black } : textcolor}
             text={isEntry ? "Unentry" : "Entry"}
           />
         </MatchContent>

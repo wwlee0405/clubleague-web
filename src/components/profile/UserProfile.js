@@ -109,16 +109,6 @@ const ClubEmblem = styled.img`
 const ClubName = styled(FatText)`
   padding-top: 10px;
 `;
-const ModalText = styled(MainText)`
-  font-size: 17px;
-`;
-const ModalWrep = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 100px; 
-`;
 
 function UserProfile({
     id,
@@ -149,8 +139,8 @@ function UserProfile({
               }
             </Row>
 
-            <Edit_Profile title="Edit Profile">              
-              <EditProfile onClose={edit_Profile_Close} />              
+            <Edit_Profile title="Edit Profile">
+              <EditProfile onClose={edit_Profile_Close} />
             </Edit_Profile>
 
             <Row>
@@ -188,13 +178,14 @@ function UserProfile({
           <Title $primary>My Club</Title>
           <RowContainer $primary>
             {userMember?.map((joined) => (
-              <Link 
+              <Link
+                key={joined?.club.id}
                 to={`/club/${joined?.club?.clubname}`} 
                 state={{ clubId: joined?.club.id, userId: id }}
               >
                 <ClubTeam>
                   <ClubEmblem src={require('../../data/2bar.jpg')} />
-                  <ClubName numberOfLines={3}>{joined?.club?.clubname}</ClubName> 
+                  <ClubName numberoflines={3}>{joined?.club?.clubname}</ClubName> 
                 </ClubTeam>
               </Link>
             ))}

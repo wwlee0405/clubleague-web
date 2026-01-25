@@ -9,22 +9,6 @@ const ModalContainer = styled.div`
   left: 0;
   background-color: transparent;
 `;
-const ModalStyle = styled.div`
-  width: ${(props) => (props.modalWidth.main)};
-  margin-top: ${(props) => (props.marginTop.main)};
-  margin-left: ${(props) => (props.marginLeft.main)};
-`;
-ModalStyle.defaultProps = {
-  modalWidth: {
-    main: "300px"
-  },
-  marginTop: {
-    main: "0px"
-  },
-  marginLeft: {
-    main: "0px"
-  },
-};
 
 // `useBlur` props로 모달 외부를 클릭하면 모달을 닫을지 선택하도록 했다.
 // isOpen이 true라면 Modal 컴포넌트를 반환, false라면 null을 반환
@@ -44,20 +28,17 @@ const useVanillaModal = ({ useBlur = true } = {}) => {
   }, []);
   return {
     SearchModal: isOpen
-      ? ({ children, modalWidth, marginTop, marginLeft, onClick }) => (
+      ? ({ children, onClick }) => (
         <ModalContainer 
           className="modal"
           onClick={useBlur ? searchClose : null}
         >
-          <ModalStyle 
+          <div
             className="modal_container"
             onClick={onClick}
-            modalWidth={modalWidth}
-            marginTop={marginTop}
-            marginLeft={marginLeft}
           >
             {children}
-          </ModalStyle>
+          </div>
         </ModalContainer>
       )
       : () => null,

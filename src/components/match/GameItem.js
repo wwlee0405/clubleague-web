@@ -1,5 +1,5 @@
-import { gql, useMutation } from "@apollo/client";
-import React from "react";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   faClock,
@@ -10,10 +10,28 @@ import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
 import useUser from "../../hooks/useUser";
+import useModal from '../../hooks/useModal';
 import useEntryModal from '../../hooks/useEntryModal';
 import ProfileRow from "../profile/ProfileRow";
 import DateTime_Month from "../shared/DateTime_Month";
 import DateTime_DayOfWeek from "../shared/DateTime_DayOfWeek";
+
+import AwayClubModal from "./AwayClubModal";
+import Avatar from "../shared/Avatar";
+import ActionButton from "../shared/ActionButton";
+
+const SEE_MY_CLUB = gql`
+  query seeMyClub($offset: Int!) {
+    seeMyClub(offset: $offset) {
+      id
+      club {
+        id
+        clubname
+        emblem
+      }
+    }
+  }
+`;
 
 const Container = styled(CardContainer)``;
 const ExtraContainer = styled(CardBottom)``;
@@ -137,10 +155,67 @@ const CommentCount = styled(SubText)`
   font-size: 14px;
 `;
 
+const AwayData = styled.div`
+  background-color: ${(props) => props.theme.cardContent};
+  border-radius: 5px; 
+  width: 100%;
+  padding: 5px;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.hover};
+  }
+`;
+const ModalWrapper = styled.div`
+  align-items: center;
+  padding: 5px 20px;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.hover};
+  }
+`;
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 5px 0px;
+`;
+const AwayClubname = styled(MainText)`
+  padding-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+`;
+const TitleText = styled(SubText)`
+  font-size: 15px;
+`;
+const SelectText = styled(MainText)`
+  font-size: 18px;
+  font-weight: 600;
+`;
+
 function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }) {
   const { data } = useUser();
   const { EntryModal: HomeEntryModal, entryOpen: homeEntryOpen } = useEntryModal();
   const { EntryModal: AwayEntryModal, entryOpen: awayEntryOpen } = useEntryModal();
+
+  const { Modal: AwayGame, open: awayGameOpen, close: awayGameClose } = useModal();
+
+  const [chosenClubId, setChosenClubId] = useState("");
+  const [chosenClubname, setChosenClubname] = useState("");
+  const [chosenEmblem, setChosenEmblem] = useState("");
+    
+  const chooseClub = (clubId, clubname, emblem) => {
+    setChosenClubId(clubId);
+    setChosenClubname(clubname);
+    setChosenEmblem(emblem);
+  };
+
+  const { data: awayClubData } = useQuery(SEE_MY_CLUB, {
+    variables: {
+      offset: 0,
+    },
+  });
   
   //Mon Dec 01 2025
   //const year = dateString.slice(11, 15);  "2025" 
@@ -180,7 +255,7 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
           </KickOffData>
           {awayGame?.id ? (
             <ClubData
-              onPress={() => null}
+              onClick={() => null}
             >
               {awayGame?.club.emblem ? (
                 <ClubEmblem src={awayGame?.club.emblem} />
@@ -222,8 +297,7 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
           <HomeEntryModal>
             <div>
               {homeGame?.entries?.map((entry) => (
-                <ProfileRow 
-                  key={entry.id} 
+                <ProfileRow  
                   profileLink={
                     data?.me?.username !== entry?.user.username ? 
                       (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
@@ -251,7 +325,6 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
                 <div>
                   {awayGame?.entries?.map((entry) => (
                     <ProfileRow
-                      key={entry.id} 
                       profileLink={
                         data?.me?.username !== entry?.user.username ? 
                           (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
@@ -273,6 +346,32 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
         <FileImg 
           src={require('../../data/bbbb.jpg')} 
         />
+
+        <ActionButton 
+          onClick={null}
+          text="Join Game"
+        />
+        <div>
+          <AwayData onClick={awayGameOpen}>
+            {chosenClubId !== "" ? (
+              <Row>
+                <Avatar url={require('../../data/gggg.jpg')} />   
+                <AwayClubname>{chosenClubname}</AwayClubname>
+              </Row>
+            ) : (
+              <TitleText>Select a home club to play the game</TitleText>
+            )}
+          </AwayData>
+        </div>
+        <AwayGame title="Away 클럽을 정하시오.">
+          
+          <AwayClubModal
+            matchId={id} 
+            userId={user?.id}  
+            onClose={awayGameClose}
+          />
+        </AwayGame>
+
         <CaptionData>
           <span>{caption}</span>
         </CaptionData>
@@ -282,6 +381,7 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
         </CommentContent>
 
       </ExtraContainer>
+    
     </Container>
   );
 }
@@ -302,13 +402,15 @@ GameItem.propTypes = {
       clubname: PropTypes.string,
       emblem: PropTypes.string,
     }),
-    entries: PropTypes.shape({
-      id: PropTypes.number,
-      user: PropTypes.shape({
-        username: PropTypes.string,
-        avatar: PropTypes.string,
+    entries: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        user: PropTypes.shape({
+          username: PropTypes.string,
+          avatar: PropTypes.string,
+        }),
       }),
-    }),
+    ),
   }),
   awayGame: PropTypes.shape({
     id: PropTypes.number,
@@ -317,13 +419,15 @@ GameItem.propTypes = {
       clubname: PropTypes.string,
       emblem: PropTypes.string,
     }),
-    entries: PropTypes.shape({
-      id: PropTypes.number,
-      user: PropTypes.shape({
-        username: PropTypes.string,
-        avatar: PropTypes.string,
+    entries: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        user: PropTypes.shape({
+          username: PropTypes.string,
+          avatar: PropTypes.string,
+        }),
       }),
-    }),
+    ),
   }),
   commentNumber: PropTypes.number,
 };
