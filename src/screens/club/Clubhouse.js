@@ -79,9 +79,6 @@ function Clubhouse() {
   const clubSched = schedData?.seeClubSched?.map((sched) => 
     <ClubSchedItem key={sched.id} {...sched} />
   );
-
-  console.log(state?.clubId);
-  console.log(state?.userId);
   return (
     <Container>
       <PageTitle

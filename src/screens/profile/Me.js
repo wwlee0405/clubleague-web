@@ -2,7 +2,7 @@ import PageTitle from "../../components/PageTitle";
 import useUser from "../../hooks/useUser";
 import UserProfile from "../../components/profile/UserProfile";
 import styled from "styled-components";
-import UserSetting from "../../components/profile/UserSetting";
+import UserSettig from "../../components/profile/UserSettig";
 
 const Row = styled.div`
   display: flex;
@@ -29,11 +29,11 @@ function Me() {
       <UserProfile key={data?.me.id} {...data?.me} />
       <Row>
         <FlexOne>
-          <UserSetting />
+          <UserSettig />
         </FlexOne>
 
         <FlexTwo>
-          <UserSetting />
+          <UserSettig />
         </FlexTwo>          
       </Row>
     </div>

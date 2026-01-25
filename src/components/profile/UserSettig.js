@@ -48,7 +48,7 @@ const DarkModeBtn = styled.span`
   cursor: pointer;
 `;
 
-function UserSetting() {
+function UserSettig() {
   const darkMode = useReactiveVar(darkModeVar);
 
   const navigate = useNavigate();
@@ -79,4 +79,4 @@ function UserSetting() {
     </div>
   );
 }
-export default UserSetting;
+export default UserSettig;

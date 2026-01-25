@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import ClubItem from "./components/club/ClubItem";
 import JoinNav from "./components/club/JoinNav";
 import UnjoinNav from "./components/club/UnjoinNav";
+import UnjoinClubBody from "./components/club/UnjoinClubBody";
 import { SEE_CLUB, SEE_JOINED_CLUB } from "./gql/sharedQuery";
 import { HeaderStyle } from "./components/shared";
 
@@ -50,7 +51,7 @@ const Content = styled.main`
 function ClubRoot() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { data } = useQuery(SEE_CLUB, {
+  const { data, loading } = useQuery(SEE_CLUB, {
     variables: {
       id: state?.clubId,
     },
@@ -116,8 +117,8 @@ function ClubRoot() {
     variables: {
       clubId: state?.clubId
     },
-    update: joinClubUpdate,
     refetchQueries: [SEE_JOINED_CLUB],
+    update: joinClubUpdate,
   });
   const joinedSticky = <JoinNav {...joinData?.seeJoinedClub} />;
   const unjoinedSticky = (
@@ -153,7 +154,7 @@ function ClubRoot() {
 
       <Content>
         {data?.seeClub.isJoined === false ? 
-          <div>unjoin_Club_Close</div> 
+          <UnjoinClubBody title={loading ? "Loading..." : `${data?.seeClub?.clubname}`} />
           : 
           <Outlet />
         }

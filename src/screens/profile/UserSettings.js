@@ -93,16 +93,9 @@ const ModalWrep = styled.div`
   justify-content: space-between;
   padding: 10px 100px; 
 `;
-const buttonColor = {
-  main: (props) => props.theme.blue
-};
-const textColor = {
-  main: (props) => props.theme.white
-};
-
 function UserSettings() {
   const { data } = useUser();
-  const { Modal: Edit_Profile, open: edit_Profile_Open, close: edit_Profile_Close } = useModal();
+  const { Modal: Trans_Langs, open: trans_Langs_Open, close: trans_Langs_Close } = useModal();
 
   return (
     <Form>
@@ -126,9 +119,14 @@ function UserSettings() {
           <Text>Switch mode</Text>
         </TextWrep>
 
-        <TextWrep>
-          <Text>유저차단설정</Text>
+        <TextWrep onClick={trans_Langs_Open}>
+          <Text>Language</Text>
         </TextWrep>
+        <Trans_Langs>
+          <span>English</span>
+          <span>한국어</span>
+          <span>日本語</span>
+        </Trans_Langs>
 
         <TextWrep>
           <Text>팀차단설정</Text>

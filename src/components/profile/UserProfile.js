@@ -2,14 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Button from "../auth/Button";
 import { FatText, SubText, MainText } from "../shared";
-
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import useUser from "../../hooks/useUser";
 import useModal from '../../hooks/useModal';
 import EditProfile from "./EditProfile";
+import Button from "../auth/Button";
 
 const ColumnContainer = styled.div`
   display: flex;
@@ -111,104 +110,105 @@ const ClubName = styled(FatText)`
 `;
 
 function UserProfile({
-    id,
-    avatar,
-    username,
-    fullName,
-    isMe,
-    userMember,
-  }) {
-    const { Modal: Edit_Profile, open: edit_Profile_Open, close: edit_Profile_Close } = useModal();    
-    return (
-      <ColumnContainer>
-        <RowContainer>
-          <AvatarWrep >
-            <Link 
-              to={`/${username}/settings/profile`} 
-            >
-              <Avatar>{avatar ? <Img src={avatar} /> : <UserFont><FontAwesomeIcon icon={faUser} size="6x" style={{ color: "#2e8b57" }} /></UserFont>}</Avatar>
-            </Link>
-          </AvatarWrep>
-          <Column>
-            <Row>
-              <Username>{username}</Username>
-              {isMe ? 
-                <ProfileBtn onClick={edit_Profile_Open}>Edit Profile</ProfileBtn>
-                :
-                null
-              }
-            </Row>
+  id,
+  avatar,
+  username,
+  fullName,
+  isMe,
+  userMember,
+}) {
+  const { data, loading } = useUser();
+  const { Modal: Edit_Profile, open: edit_Profile_Open, close: edit_Profile_Close } = useModal();
+  return (
+    <ColumnContainer>
+      <RowContainer>
+        <AvatarWrep >
+          <Link 
+            to={`/${username}/settings/profile`} 
+          >
+            <Avatar>{avatar ? <Img src={avatar} /> : <UserFont><FontAwesomeIcon icon={faUser} size="6x" style={{ color: "#2e8b57" }} /></UserFont>}</Avatar>
+          </Link>
+        </AvatarWrep>
+        <Column>
+          <Row>
+            <Username>{username}</Username>
+            {isMe ? 
+              <ProfileBtn onClick={edit_Profile_Open}>Edit Profile</ProfileBtn>
+              :
+              null
+            }
+          </Row>
 
-            <Edit_Profile title="Edit Profile">
-              <EditProfile onClose={edit_Profile_Close} />
-            </Edit_Profile>
+          <Edit_Profile title="Edit Profile">
+            <EditProfile onClose={edit_Profile_Close} />
+          </Edit_Profile>
 
-            <Row>
-              <List>
-                <Item>
-                  <Column>
-                    <Value>111</Value> 
-                    <NameTag>followers</NameTag>
-                  </Column>
-                </Item>
-                <Item>
-                  <Column>
-                    <Value>1,500</Value>
-                    <NameTag>following</NameTag>
-                  </Column>
-                </Item>
-              </List>
-            </Row>
-            <Row>
-              <Column>
-                <NameTag>Name</NameTag>
-                <Value>{fullName}</Value>
-              </Column>    
-            </Row>
-            <Row>  
-              <Column>
-                <NameTag>Area</NameTag>
-                <Value>Barcelona, Spain</Value>
-              </Column>
-            </Row>
-          </Column>
-        </RowContainer>
+          <Row>
+            <List>
+              <Item>
+                <Column>
+                  <Value>111</Value> 
+                  <NameTag>followers</NameTag>
+                </Column>
+              </Item>
+              <Item>
+                <Column>
+                  <Value>1,500</Value>
+                  <NameTag>following</NameTag>
+                </Column>
+              </Item>
+            </List>
+          </Row>
+          <Row>
+            <Column>
+              <NameTag>Name</NameTag>
+              <Value>{fullName}</Value>
+            </Column>    
+          </Row>
+          <Row>  
+            <Column>
+              <NameTag>Area</NameTag>
+              <Value>Barcelona, Spain</Value>
+            </Column>
+          </Row>
+        </Column>
+      </RowContainer>
         
-        <ColumnContainer>
-          <Title $primary>My Club</Title>
-          <RowContainer $primary>
-            {userMember?.map((joined) => (
-              <Link
-                key={joined?.club.id}
-                to={`/club/${joined?.club?.clubname}`} 
-                state={{ clubId: joined?.club.id, userId: id }}
-              >
-                <ClubTeam>
-                  <ClubEmblem src={require('../../data/2bar.jpg')} />
-                  <ClubName numberoflines={3}>{joined?.club?.clubname}</ClubName> 
-                </ClubTeam>
-              </Link>
-            ))}
-          </RowContainer>
-        </ColumnContainer>
+      <ColumnContainer>
+        <Title $primary>My Club</Title>
+        <RowContainer $primary>
+          {userMember?.map((joined) => (
+            <Link
+              key={joined?.club.id}
+              to={`/club/${joined?.club?.clubname}`} 
+              state={{ clubId: joined?.club.id, userId: data?.me.id }}
+            >
+              <ClubTeam>
+                <ClubEmblem src={require('../../data/2bar.jpg')} />
+                <ClubName numberoflines={3}>{joined?.club?.clubname}</ClubName> 
+              </ClubTeam>
+            </Link>
+          ))}
+        </RowContainer>
       </ColumnContainer>
-    );
-  }
+    </ColumnContainer>
+  );
+}
   
-  UserProfile.propTypes = {
-    id: PropTypes.number,
-    avatar: PropTypes.string,
-    username: PropTypes.string,
-    fullName: PropTypes.string,
-    isMe: PropTypes.bool,
-    userMember: PropTypes.arrayOf(
-      PropTypes.shape({
-        club: PropTypes.shape({
-          id: PropTypes.number,
-          clubname: PropTypes.string,
-        }),
+UserProfile.propTypes = {
+  id: PropTypes.number,
+  avatar: PropTypes.string,
+  username: PropTypes.string,
+  fullName: PropTypes.string,
+  isMe: PropTypes.bool,
+  userMember: PropTypes.arrayOf(
+    PropTypes.shape({
+      club: PropTypes.shape({
+        id: PropTypes.number,
+        clubname: PropTypes.string,
       }),
-    ),
-  };
+    }),
+  ),
+};
   
-  export default UserProfile;
+export default UserProfile;

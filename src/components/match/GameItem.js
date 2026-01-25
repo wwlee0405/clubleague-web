@@ -347,10 +347,6 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
           src={require('../../data/bbbb.jpg')} 
         />
 
-        <ActionButton 
-          onClick={null}
-          text="Join Game"
-        />
         <div>
           <AwayData onClick={awayGameOpen}>
             {chosenClubId !== "" ? (
