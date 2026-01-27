@@ -66,8 +66,8 @@ function UnjoinClub({ id, club }) {
       <BottonWrep>
         <ActionButton
           onClick={unjoinClub}
-          boxColor={{ main: (props) => props.theme.primary }}
-          textcolor={{ main: (props) => props.theme.white }}
+          $buttoncolor={(props) => props.theme.primary}
+          $textcolor={(props) => props.theme.white}
           text={loading ? "Loading..." : "Yes"}
         />
       </BottonWrep>

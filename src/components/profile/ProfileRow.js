@@ -18,17 +18,17 @@ const Username = styled.span`
   color: ${(props) => props.theme.text};
 `;
 
-function ProfileRow({ profileLink, state, avatar, username, lg = false }) {
+function ProfileRow({ profileLink, state, avatar, username, lg }) {
   return (
     <Wrapper>
       <Column>
         {avatar ? 
           <Link to={profileLink} state={state}>
-            <Avatar lg={lg} url={avatar} />
+            <Avatar url={avatar} />
           </Link>
           : 
           <Link to={profileLink} state={state}>
-            <Avatar lg={lg} url={require('../../data/gggg.jpg')} />
+            <Avatar url={require('../../data/gggg.jpg')} />
           </Link>
         }
         <Link to={profileLink} state={state}>

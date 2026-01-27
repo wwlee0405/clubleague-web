@@ -139,10 +139,6 @@ function ClubSetting() {
   const me = userData?.me.id;
   const seeJoinedClubId = data?.seeJoinedClub?.id;
   const data_seeJoinedClub = data?.seeJoinedClub;
-
-  console.log(clubLeader);
-  console.log(state?.userId);
-  console.log(data?.seeJoinedClub?.id);
   return (
     <div>
       <Container>

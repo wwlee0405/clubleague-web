@@ -2,11 +2,10 @@ import { gql, useQuery, useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Avatar from "../shared/Avatar";
 import { MainText, SubText } from "../shared";
-import ActionButton from "../shared/ActionButton";
-
 import { MATCH_QUERY } from "../../gql/sharedQuery"
+import Avatar from "../shared/Avatar";
+import ActionButton from "../shared/ActionButton";
 
 const SEE_MY_CLUB = gql`
   query seeMyClub($offset: Int!) {
@@ -84,7 +83,6 @@ function AwayClubModal({ id, onClose, matchId, userId }) {
       offset: 0,
     },
   });
-
   const joinAwayGameUpdate = (cache, result) => {
     const {
       data: {
@@ -140,41 +138,38 @@ function AwayClubModal({ id, onClose, matchId, userId }) {
   };
   return (
     <div key={matchId}>
-      <span>Away Club을 선택해주세요.</span>
       <TopRow>
         <TopWrapper>
             {chosenClubId !== "" ? (
-            <Row>
+              <Row>
                 <Avatar url={require('../../data/gggg.jpg')} />
                 <Clubname>{chosenClubname}</Clubname>
-            </Row>
+              </Row>
             ) : null}
         </TopWrapper>
         <BottonWrep>
           {chosenClubId === "" ? (
-              <ActionButton
-                onClick={null}
-                boxColor={{ main: (props) => props.theme.grey03 }}
-                textcolor={{ main: (props) => props.theme.black }}
-                text="Join Game"
-              />
-            ) : (
-              <ActionButton
-                onClick={() => {
-                  joinAwayGame();
-                  closeButton(onClose); 
-                }}
-                boxColor={{ main: (props) => props.theme.blue }}
-                textcolor={{ main: (props) => props.theme.white }}
-                text="Join Game"
-              />
-            )
-          }
+            <ActionButton
+              onClick={null}
+              boxColor={{ main: (props) => props.theme.grey03 }}
+              textcolor={{ main: (props) => props.theme.black }}
+              text="Join Game"
+            />
+          ) : (
+            <ActionButton
+              onClick={() => {
+                joinAwayGame();
+                closeButton(onClose); 
+              }}
+              boxColor={{ main: (props) => props.theme.blue }}
+              textcolor={{ main: (props) => props.theme.white }}
+              text="Join Game"
+            />
+          )}
         </BottonWrep>
       </TopRow>
       
       <div>
-        <Title>Away</Title>
         {data?.seeMyClub?.map((away) => (
           <Wrapper
             key={away.id}

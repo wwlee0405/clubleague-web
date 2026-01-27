@@ -121,7 +121,7 @@ function NewClub() {
           })}
           type="text"
           placeholder="Input Club Name"
-          hasError={Boolean(errors.clubname?.message)}
+          haserror={errors ? errors.clubname?.message : undefined}
         />
         <FormError message={errors.clubname?.message} />
         <Input

@@ -6,7 +6,7 @@ const Input = styled.input`
   padding: 7px;
   background-color: #fafafa;
   border: 0.5px solid
-    ${(props) => (props.hasError ? "tomato" : props.theme.borderColor)};
+    ${(props) => (props.haserror ? "tomato" : props.theme.borderColor)};
   margin-top: 5px;
   box-sizing: border-box;
   &::placeholder {

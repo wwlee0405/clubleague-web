@@ -136,7 +136,6 @@ function ClubRoot() {
       return { ...previousState, Sticky: unjoinedSticky }
     });
   }
-  console.log(data?.seeClub.isJoined);
   return (
     <Container>
       <Header />

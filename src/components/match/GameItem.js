@@ -338,7 +338,7 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
             </div>       
           ) : (
             <Entry>
-              <EntryText>No awayclub</EntryText>
+              <EntryText>No Entry</EntryText>
             </Entry>
           )}
         </EntryContent>

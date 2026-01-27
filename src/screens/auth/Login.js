@@ -100,7 +100,7 @@ function Login() {
             })}
             type="text"
             placeholder="Username"
-            hasError={Boolean(errors.username?.message)}
+            haserror={errors ? errors.username?.message : undefined}
           />
           <FormError message={errors.username?.message} />
           <Input
@@ -109,7 +109,7 @@ function Login() {
             })}
             type="password"
             placeholder="Password"
-            hasError={Boolean(errors.password?.message)}
+            haserror={errors ? errors.password?.message : undefined}
           />
           <FormError message={errors.password?.message} />
           <Button

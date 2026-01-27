@@ -47,7 +47,7 @@ export default function HeaderAvatar({ profileLink, profileState, image, topData
     <ButtonTochable>
       <Wrapper>
         <Link to={profileLink} state={profileState}>
-          <Avatar lg url={image} />
+          <Avatar $lg url={image} />
         </Link>
         <Link to={profileLink} state={profileState}>
           <TextData>

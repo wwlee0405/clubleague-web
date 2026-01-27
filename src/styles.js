@@ -7,6 +7,7 @@ export const lightTheme = {
   barColor: "#ffffff",
   fontColor: "rgb(38, 38, 38)",
   borderColor: "rgb(219, 219, 219)",
+  modalBg: "rgba(255, 255, 255, 0.4)",
 
   emerald: "#51c878",
   symbolColor: "#2e8b57",
@@ -38,6 +39,7 @@ export const darkTheme = {
   barColor: "#252728",
   fontColor: "white",
   borderColor: "#2F3132",
+  modalBg: "rgba(38, 38, 38, 0.4)",
   
   emerald: "#51c878",
   symbolColor: "#2e8b57",

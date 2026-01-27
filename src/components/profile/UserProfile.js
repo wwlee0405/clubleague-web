@@ -185,7 +185,7 @@ function UserProfile({
             >
               <ClubTeam>
                 <ClubEmblem src={require('../../data/2bar.jpg')} />
-                <ClubName numberoflines={3}>{joined?.club?.clubname}</ClubName> 
+                <ClubName>{joined?.club?.clubname}</ClubName> 
               </ClubTeam>
             </Link>
           ))}

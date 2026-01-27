@@ -1,4 +1,3 @@
-import React from "react";
 import { gql, useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -6,6 +5,7 @@ import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
 import Avatar from "../shared/Avatar";
 import ActionButton from "../shared/ActionButton";
+import useUser from "../../hooks/useUser";
 
 const TOGGLE_ENTRY_MUTATION = gql`
   mutation toggleEntry($gameId: Int!) {
@@ -48,8 +48,7 @@ const DateList = styled.div`
 const WeekText = styled(MainText)`
   font-weight: bold;
 `;
-const MonthText = styled(SubText)`
-`;
+const MonthText = styled(SubText)``;
 const Sports = styled(MainText)`
   font-weight: 600;
   font-size: 15px;
@@ -109,8 +108,8 @@ const buttoncolor = {
 const textcolor = {
   main: (props) => props.theme.white
 };
-
 function MySchedItem({ id, club, entryNumber, isEntry, loading }) {
+  const { data } = useUser();
   const toggleEntryUpdate = (cache, result) => {
     const {
       data: {
@@ -141,12 +140,11 @@ function MySchedItem({ id, club, entryNumber, isEntry, loading }) {
     },
     update: toggleEntryUpdate,
   });
-  
   return (
     <Container key={id}>
       <HeaderAvatar
         profileLink={`/club/${club?.clubname}`} 
-        profileState={{ clubId: club?.id }}
+        profileState={{ clubId: club?.id, userId: data?.me.id }}
         image={club?.emblem ? club?.emblem : require('../../data/1ars.jpg')}
         topData={club?.clubname}
         bottomData="Seoul, Korea"
@@ -179,8 +177,8 @@ function MySchedItem({ id, club, entryNumber, isEntry, loading }) {
 
           <ActionButton
             onClick={toggleEntry}
-            boxColor={isEntry ? { main: (props) => props.theme.grey03 } : buttoncolor}
-            textcolor={isEntry ? { main : (props) => props.theme.black } : textcolor}
+            $buttoncolor={isEntry ?  (props) => props.theme.grey03 : (props) => props.theme.blue}
+            $textcolor={isEntry ? (props) => props.theme.black : (props) => props.theme.white}
             text={isEntry ? "Unentry" : "Entry"}
           />
         </MatchContent>

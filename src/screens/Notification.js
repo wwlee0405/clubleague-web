@@ -25,7 +25,7 @@ function Notification() {
     <div>
       <PageTitle title="Notification | Clubleague" />
       {data?.seeNotification?.map((noti) => (
-        <div>{noti.user.username}..@@..{noti.payload}</div>
+        <div key={noti.id}>{noti.user.username}..@@..{noti.payload}</div>
       ))}
     </div>
   );

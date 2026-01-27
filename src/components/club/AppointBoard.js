@@ -125,7 +125,7 @@ function AppointBoard({ onClose }) {
         <Title>Board</Title>
         {data?.seeClubMembers?.map((board) => (
           board.boardAuth === true ? (
-            <Wrapper>
+            <Wrapper key={board.id}>
               <Row>
                 <Avatar url={require('../../data/gggg.jpg')} />
                 <Username>{board.user.username}</Username>
@@ -140,6 +140,7 @@ function AppointBoard({ onClose }) {
         {data?.seeClubMembers?.map((members) => (
           members.boardAuth === false ? (
             <Wrapper 
+              key={members.id}
               onClick={() => {
                 chooseMember(
                   members.id,
@@ -160,8 +161,8 @@ function AppointBoard({ onClose }) {
         {chosenMemberId === "" ? (
             <ActionButton
               onClick={null}
-              boxColor={{ main: (props) => props.theme.grey03 }}
-              textcolor={{ main: (props) => props.theme.black }}
+              $buttoncolor={(props) => props.theme.grey03}
+              $textcolor={(props) => props.theme.black}
               text="임원임명"
             />
           ) : (
@@ -170,12 +171,13 @@ function AppointBoard({ onClose }) {
                 appointBoard();
                 closeButton(onClose); 
               }}
+              $buttoncolor={(props) => props.theme.blue}
+              $textcolor={(props) => props.theme.white}
               text="임원임명"
             />
           )
         }
       </BottonWrep>
-      
     </div>
   );
 }

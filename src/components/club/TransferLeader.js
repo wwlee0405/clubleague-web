@@ -135,6 +135,7 @@ function TransferLeader({ onClose }) {
         {data?.seeClubMembers?.map((members) => (
           members.club.clubLeader.id !== members.user?.id ? (
             <Wrapper 
+              key={members.id}
               onClick={() => {
                 chooseLeader(
                   members.id,
@@ -155,8 +156,8 @@ function TransferLeader({ onClose }) {
         {chosenLeaderId === "" ? (
             <ActionButton
               onClick={null}
-              boxColor={{ main: (props) => props.theme.grey03 }}
-              textcolor={{ main: (props) => props.theme.black }}
+              $buttoncolor={(props) => props.theme.grey03}
+              $textcolor={(props) => props.theme.black}
               text="리더양도"
             />
           ) : (
@@ -165,8 +166,8 @@ function TransferLeader({ onClose }) {
                 transferLeader();
                 closeButton(onClose); 
               }}
-              boxColor={{ main: (props) => props.theme.blue }}
-              textcolor={{ main: (props) => props.theme.white }}
+              $buttoncolor={(props) => props.theme.blue}
+              $textcolor={(props) => props.theme.white}
               text="리더양도"
             />
           )

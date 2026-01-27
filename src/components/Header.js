@@ -307,7 +307,7 @@ function Header() {
               </Icon>
               <Icon>
                 <Link to={`/${data?.me?.username}`}>
-                  <Avatar lg url={data?.me?.avatar} />
+                  <Avatar $lg url={data?.me?.avatar} />
                 </Link>
               </Icon>
             </IconsContainer>

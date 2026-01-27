@@ -46,9 +46,6 @@ function ClubMember() {
       id: state?.clubId,
     },
   });
-
-  console.log(state?.clubId);
-  console.log(state?.userId);
   return (
     <Container>
       
