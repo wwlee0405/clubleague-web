@@ -151,9 +151,9 @@ function AwayClubModal({ id, onClose, matchId, userId }) {
           {chosenClubId === "" ? (
             <ActionButton
               onClick={null}
-              boxColor={{ main: (props) => props.theme.grey03 }}
-              textcolor={{ main: (props) => props.theme.black }}
               text="Join Game"
+              $buttoncolor={(props) => props.theme.grey03}
+              $textcolor={(props) => props.theme.black}
             />
           ) : (
             <ActionButton
@@ -161,9 +161,9 @@ function AwayClubModal({ id, onClose, matchId, userId }) {
                 joinAwayGame();
                 closeButton(onClose); 
               }}
-              boxColor={{ main: (props) => props.theme.blue }}
-              textcolor={{ main: (props) => props.theme.white }}
               text="Join Game"
+              $buttoncolor={(props) => props.theme.symbolColor}
+              $textcolor={(props) => props.theme.white}
             />
           )}
         </BottonWrep>

@@ -1,4 +1,4 @@
-export default function DateTime_Month({ date }) {
+export default function DateMonth({ date }) {
   const monthString = new Date(parseInt(date)).toDateString().slice(4, 7);
   const month = (
     monthString === "Jan" ? "JAN" : (

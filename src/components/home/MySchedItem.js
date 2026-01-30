@@ -177,7 +177,7 @@ function MySchedItem({ id, club, entryNumber, isEntry, loading }) {
 
           <ActionButton
             onClick={toggleEntry}
-            $buttoncolor={isEntry ?  (props) => props.theme.grey03 : (props) => props.theme.blue}
+            $buttoncolor={isEntry ?  (props) => props.theme.grey03 : (props) => props.theme.symbolColor}
             $textcolor={isEntry ? (props) => props.theme.black : (props) => props.theme.white}
             text={isEntry ? "Unentry" : "Entry"}
           />

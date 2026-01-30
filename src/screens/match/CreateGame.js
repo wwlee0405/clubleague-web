@@ -280,6 +280,8 @@ function CreateGame() {
         text="Create"
         loading={loading}
         disabled={chosenClubId !== "" ? null : isValid}
+        $buttoncolor={chosenClubId !== "" ?  (props) => props.theme.symbolColor : (props) => props.theme.grey03}
+        $textcolor={chosenClubId !== "" ? (props) => props.theme.white : (props) => props.theme.black}
       />
       
     </Container>

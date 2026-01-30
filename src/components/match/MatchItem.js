@@ -6,8 +6,8 @@ import styled from "styled-components";
 import useUser from "../../hooks/useUser";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import HeaderAvatar from "../shared/HeaderAvatar";
-import DateTime_Month from "../shared/DateTime_Month";
-import DateTime_DayOfWeek from "../shared/DateTime_DayOfWeek";
+import DateMonth from "../shared/DateMonth";
+import DateDayOfWeek from "../shared/DateDayOfWeek";
 
 const DELETE_GAME_MUTATION = gql`
   mutation deleteGame($id: Int!) {
@@ -149,8 +149,8 @@ function MatchItem({ id, user, homeGame, awayGame, date }) {
             <SchedData>
               <DateText>{day}</DateText>
               <DateList>
-                <WeekText><DateTime_DayOfWeek date={date} /></WeekText>
-                <MonthText><DateTime_Month date={date} /></MonthText>
+                <WeekText><DateDayOfWeek date={date} /></WeekText>
+                <MonthText><DateMonth date={date} /></MonthText>
               </DateList>
             </SchedData>
             <div>

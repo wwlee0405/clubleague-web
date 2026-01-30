@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styled from "styled-components";
-import { faMap } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
 const ModalContainer = styled.div`
   width: 100%;
@@ -18,7 +18,8 @@ const ModalContainer = styled.div`
 `;
 const ModalStyle = styled.div`
   width: 600px;
-  padding: 20px;
+  padding: 10px;
+  border-radius: 20px;
   background-color: ${(props) => props.theme.cardHeader};
 `;
 const ModalHeader = styled.div`
@@ -56,15 +57,12 @@ const useEntryModal = ({ useBlur = true } = {}) => {
             <ModalHeader>
               <div></div>
               <div onClick={useBlur ? entryClose : null}>
-                <FontAwesomeIcon icon={faMap} size="2x" />
-                <span>X</span>
+                <FontAwesomeIcon icon={faX} fontSize="18px" style={{paddingRight: 10}} />
               </div>
-              
             </ModalHeader>
             {children}
           </ModalStyle>
         </ModalContainer>
-        
       )
       : () => null,
     entryOpen,

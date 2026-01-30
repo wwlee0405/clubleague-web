@@ -81,7 +81,7 @@ const ProfileBtn = styled(Button).attrs({
   cursor: pointer;
   padding-left: 40px;
   padding-right: 40px;
-  background-color: ${(props) => props.theme.emerald};
+  background-color: ${(props) => props.theme.symbolColor};
 `;
 const ClubTeam = styled.div`
   display: flex;

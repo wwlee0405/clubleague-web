@@ -1,4 +1,4 @@
-export default function DateTime_DayOfWeek({ date }) {
+export default function DateDayOfWeek({ date }) {
   const dayOfWeekString = new Date(parseInt(date)).toDateString().slice(0, 3);
   const dayOfWeek = (
     dayOfWeekString === "Mon" ? "MONDAY" : (
