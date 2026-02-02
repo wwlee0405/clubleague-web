@@ -1,40 +1,19 @@
-import { gql, useLazyQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { useReactiveVar } from "@apollo/client";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import {
-  faPaperPlane,
-  faHeart,
-} from "@fortawesome/free-regular-svg-icons";
-import { faHome, faDisplay, faCamera, faMagnifyingGlass, faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faHeart, faBell } from "@fortawesome/free-regular-svg-icons";
+import { faHome, faDisplay, faCamera, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { isLoggedInVar } from "../apollo";
+import styled from "styled-components";
 import useUser from "../hooks/useUser";
 import routes from "../routes";
-import Avatar from "./shared/Avatar";
 import { HeaderStyle, MainText } from "./shared";
 import useVanillaModal from '../hooks/useVanillaModal';
-import { useForm } from "react-hook-form";
-import Input from "./auth/Input";
-import ProfileRow from "./profile/ProfileRow";
-
-const SEARCH_CLUBS = gql`
-  query searchClubs($keyword: String!) {
-    searchClubs(keyword: $keyword) {
-      id
-      clubname
-      clubArea
-      emblem
-      totalMember
-      clubLeader {
-        username
-      }
-      isJoined
-    }
-  }
-`;
+import HeaderSearch from "./HeaderSearch";
+import Notification from "./Notification";
+import Avatar from "./shared/Avatar";
 
 const HeaderContainer = styled(HeaderStyle)`
   position: sticky;
@@ -76,26 +55,6 @@ const IconBox = styled.div`
     background-color: ${(props) => props.theme.hover};
   }
 `;
-const SearchModalContainer = styled.div`
-  padding: 5px 10px;
-  border-radius: 10px;
-  background-color: ${(props) => props.theme.cardContent};
-  width: 300px;
-`;
-const SearchModalHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-const SearchModalWrep = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-`;
-const SearchModalText = styled(MainText)`
-  font-size: 16px;
-`;
 const CreateModalContainer = styled.div`
   padding: 10px 0px;
   border-radius: 10px;
@@ -135,7 +94,10 @@ const Icon = styled.span`
   }
   cursor: pointer;
 `;
-
+const NotiModalContainer = styled.div`
+  margin-top: 57px;
+  margin-right: 20px;
+`;
 const IconBackup = styled.span`
   margin-left: 30px;
   transition: 0.5s;
@@ -146,7 +108,6 @@ const IconBackup = styled.span`
   &:active {
     color: ${(props) => props.theme.accent};
   }
-
   ${(props) => {
     switch (props.$mode) {
       case "dark" : 
@@ -184,66 +145,24 @@ function Header() {
 
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const { data } = useUser();
-  const { SearchModal, searchOpen, searchClose } = useVanillaModal();
-  const { SearchModal: CreateModal, searchOpen: createOpen, searchClose: createClose } = useVanillaModal();
-  const { setValue, register, watch, handleSubmit } = useForm();
-  const [startQueryFn, { loading, data: searchData, called }] = useLazyQuery(SEARCH_CLUBS);
-  const onValid = ({ keyword }) => {
-    startQueryFn({
-      variables: {
-        keyword,
-      },
-    });
-  };
+  const { VanillaModal: SearchModal, vanillaOpen: searchOpen, vanillaClose: searchClose } = useVanillaModal();
+  const { VanillaModal: CreateModal, vanillaOpen: createOpen, vanillaClose: createClose } = useVanillaModal();
+  const { VanillaModal: NotiModal, vanillaOpen: notiOpen, vanillaClose: notiClose } = useVanillaModal();
+
   return (
     <HeaderContainer>
       <Wrapper>
         <Row>
           <FontAwesomeIcon icon={faInstagram} size="3x" />
 
-          <>
-            <IconBox onClick={searchOpen}>
-              <CursorIcon>
-                <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" />  
-              </CursorIcon>
-            </IconBox>
-            <SearchModal onClick={(e) => e.stopPropagation()}>
-              <SearchModalContainer>
-                <form onSubmit={handleSubmit(onValid)}>
-                  <SearchModalHeader>
-                    <div onClick={searchClose}>
-                      <FontAwesomeIcon icon={faArrowLeft} fontSize="18px" style={{paddingRight:10}} />
-                    </div>
-                    <Input
-                      {...register("keyword", {
-                        required: "Email is required",
-                        minLength: 1,
-                      })}
-                      type="text"
-                      placeholder="Search clubs"
-                    />
-                  </SearchModalHeader>
-                </form>
-                {loading ? <SearchModalWrep><SearchModalText>searching...</SearchModalText></SearchModalWrep> : null}
-                {!called ? <SearchModalWrep><SearchModalText>Search by keyword</SearchModalText></SearchModalWrep> : null}
-                {searchData?.searchClubs !== undefined ? (
-                  searchData?.searchClubs?.length === 0 ? (
-                    <SearchModalWrep><SearchModalText>Could not find anything.</SearchModalText></SearchModalWrep>
-                  ) : (
-                    searchData?.searchClubs?.map((club) => (     
-                      <ProfileRow 
-                        key={club?.id}
-                        profileLink={`/club/${club?.clubname}`}
-                        state={{ clubId: club?.id, userId: data?.me.id }}
-                        avatar={club?.emblem} 
-                        username={club?.clubname} 
-                      />
-                    ))
-                  )
-                ) : null}
-              </SearchModalContainer>
-            </SearchModal>
-          </>
+          <IconBox onClick={searchOpen}>
+            <CursorIcon>
+              <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" />  
+            </CursorIcon>
+          </IconBox>
+          <SearchModal onClick={(e) => e.stopPropagation()}>
+            <HeaderSearch onClose={searchClose} />
+          </SearchModal>
           
           <>
             <IconBox onClick={createOpen}>
@@ -294,12 +213,20 @@ function Header() {
                   <span>outcluber</span>
                 </Link>
               </Icon>
-              <Icon>
-                <Link to={routes.notification}>
-                  <FontAwesomeIcon icon={faHeart} fontSize="22px" />
-                  <span>noti</span>
-                </Link>
+
+              <Icon onClick={notiOpen}>
+                <FontAwesomeIcon icon={faBell} fontSize="22px" />
               </Icon>
+              <NotiModal 
+                $display="flex" 
+                $justfyContent="flex-end"
+                $alignItems="flex-start"
+              >
+                <NotiModalContainer>
+                  <Notification />
+                </NotiModalContainer>
+              </NotiModal>
+
               <Icon>
                 <Link to={routes.photo}>
                   <FontAwesomeIcon icon={faCamera} fontSize="22px" />
@@ -312,7 +239,7 @@ function Header() {
               </Icon>
             </IconsContainer>
           ) : (
-            <Link href={routes.home}>
+            <Link to={routes.home}>
               <Button>Login</Button>
             </Link>
           )}

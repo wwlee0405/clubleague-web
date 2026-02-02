@@ -52,6 +52,7 @@ const ClubName = styled(MainText)`
   font-size: 15px;
   font-weight: bold;
   text-align: center;
+  padding: 10px 0;
 `;
 const KickOffData = styled.div`
   display: flex;

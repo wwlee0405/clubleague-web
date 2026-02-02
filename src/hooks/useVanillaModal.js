@@ -7,7 +7,10 @@ const ModalContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: transperant;
+  display: ${props => props.$display};
+  justify-content: ${props => props.$justfyContent};
+  align-items: ${props => props.$alignItems};
 `;
 
 // `useBlur` props로 모달 외부를 클릭하면 모달을 닫을지 선택하도록 했다.
@@ -18,20 +21,23 @@ const useVanillaModal = ({ useBlur = true } = {}) => {
   const [isOpen, setIsOpen] = useState(false);
   
   // 모달 열기
-  const searchOpen = useCallback(() => {
+  const vanillaOpen = useCallback(() => {
     setIsOpen(() => true);
   }, []);
   
   // 모달 닫기
-  const searchClose = useCallback(() => {
+  const vanillaClose = useCallback(() => {
     setIsOpen(() => false);
   }, []);
   return {
-    SearchModal: isOpen
-      ? ({ children, onClick }) => (
+    VanillaModal: isOpen
+      ? ({ children, onClick, $display, $justfyContent, $alignItems }) => (
         <ModalContainer 
           className="modal"
-          onClick={useBlur ? searchClose : null}
+          onClick={useBlur ? vanillaClose : null}
+          $display={$display}
+          $justfyContent={$justfyContent}
+          $alignItems={$alignItems}
         >
           <div
             className="modal_container"
@@ -42,8 +48,8 @@ const useVanillaModal = ({ useBlur = true } = {}) => {
         </ModalContainer>
       )
       : () => null,
-    searchOpen,
-    searchClose,
+    vanillaOpen,
+    vanillaClose,
     isOpen,
   };
 };

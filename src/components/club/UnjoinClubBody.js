@@ -30,8 +30,6 @@ function UnjoinClubBody({ title }) {
               
       <NavBtn>
         <ActionButton
-          boxColor={{ main: (props) => props.theme.symbolColor }}
-          textcolor={{ main : (props) => props.theme.white }}
           text="Join Club"
         />
       </NavBtn> 

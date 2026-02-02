@@ -11,7 +11,6 @@ import ActionButton from "../../components/shared/ActionButton";
 import Avatar from "../../components/shared/Avatar";
 import { MainText, SubText } from "../../components/shared";
 import PageTitle from "../../components/PageTitle";
-import Button from "../../components/auth/Button";
 
 const CREATE_GAME_MUTATION = gql`
   mutation createGame($clubId: Int!, $file: String, $caption: String, $date: Date!) {
@@ -34,7 +33,6 @@ const SEE_MY_CLUB = gql`
     }
   }
 `;
-
 
 const Container = styled.div`
   display: flex;
@@ -239,6 +237,7 @@ function CreateGame() {
         <HomeGame title="Home 클럽을 정하시오.">
           {data?.seeMyClub?.map((home) => (
             <ModalWrapper
+              key={home.id}
               onClick={() => {
                 chooseClub(
                   home.club.id,
@@ -256,15 +255,6 @@ function CreateGame() {
           ))}
         </HomeGame>
 
-        <Row>
-          <TitleWrapper>
-            <TitleText>Caption</TitleText>          
-          </TitleWrapper>
-          <div>
-            <TitleText>Caption</TitleText>  
-          </div>
-        </Row>
-
         <Input
           {...register("caption")}
           type="text"
@@ -273,7 +263,6 @@ function CreateGame() {
         <FormError message={errors.caption?.message} />
       
       </form>
-      <TitleText>요청받을 클럽의 개수를 정하시오.</TitleText>
 
       <ActionButton 
         onClick={chosenClubId !== "" ? handleSubmit(onValid) : null}
