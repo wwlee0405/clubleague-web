@@ -7,7 +7,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useUser from "../../hooks/useUser";
 import useModal from '../../hooks/useModal';
-import EditProfile from "./EditProfile";
+import EditProfileModal from "./EditProfileModal";
 import Button from "../auth/Button";
 
 const ColumnContainer = styled.div`
@@ -124,7 +124,7 @@ function UserProfile({
       <RowContainer>
         <AvatarWrep >
           <Link 
-            to={`/${username}/settings/profile`} 
+            to={`/settings/profile`} 
           >
             <Avatar>{avatar ? <Img src={avatar} /> : <UserFont><FontAwesomeIcon icon={faUser} size="6x" style={{ color: "#2e8b57" }} /></UserFont>}</Avatar>
           </Link>
@@ -140,7 +140,7 @@ function UserProfile({
           </Row>
 
           <Edit_Profile title="Edit Profile">
-            <EditProfile onClose={edit_Profile_Close} />
+            <EditProfileModal onClose={edit_Profile_Close} />
           </Edit_Profile>
 
           <Row>

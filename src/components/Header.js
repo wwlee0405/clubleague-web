@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useReactiveVar } from "@apollo/client";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faPaperPlane, faHeart, faBell } from "@fortawesome/free-regular-svg-icons";
+import { faPaperPlane, faBell } from "@fortawesome/free-regular-svg-icons";
 import { faHome, faDisplay, faCamera, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
