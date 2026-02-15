@@ -20,6 +20,7 @@ import CreateGame from "./screens/match/CreateGame";
 import GameFeed from "./screens/match/GameFeed";
 
 import EditProfile from "./screens/profile/EditProfile";
+import EditAccount from "./screens/profile/EditAccount";
 import EditDarkmode from "./screens/profile/EditDarkmode";
 
 import NotFound from "./screens/NotFound";
@@ -55,8 +56,9 @@ const router = createBrowserRouter(
 
       <Route path= "/" element={<RowRoot />}>
         <Route path="settings/profile" element={<EditProfile />} />
-        <Route path="settings/darkmode" element={<EditDarkmode />} />
-      </Route>      
+        <Route path="settings/account" element={<EditAccount />} />
+        <Route path="settings/dark_mode" element={<EditDarkmode />} />
+      </Route>
     </Route>
   )
 );

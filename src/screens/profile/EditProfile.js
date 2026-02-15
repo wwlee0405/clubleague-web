@@ -178,8 +178,6 @@ function EditProfile() {
             />
             <ExpanatinText>You can appear the area in which you are active.</ExpanatinText>
             
-            <NameTag>Email</NameTag>
-            
             <NameTag>Bio</NameTag>
             <Input
               {...register("bio")}

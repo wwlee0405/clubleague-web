@@ -28,11 +28,13 @@ const Form = styled.div`
 const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 700px;
   max-width: 768px;
   background-color: ${(props) => props.theme.bgColor};
   border: 1px solid ${(props) => props.theme.border};
   padding: 20px 40px;
+  @media (min-width: 768px) {
+    height: 700px;
+  }
 `;
 const Title = styled(MainText)`
   font-size: 20px;
@@ -76,12 +78,14 @@ function RowRoot() {
             </TextWrep>
           </Link>
 
-          <TextWrep>
-            <FontAwesomeIcon icon={faFile} />
-            <Text>Account - username, email</Text>
-          </TextWrep>
+          <Link to={`/settings/account`}>
+            <TextWrep>
+              <FontAwesomeIcon icon={faFile} />
+              <Text>Account - username, email</Text>
+            </TextWrep>
+          </Link>
 
-          <Link to={`/settings/darkmode`}>
+          <Link to={`/settings/dark_mode`}>
             <TextWrep>
               <FontAwesomeIcon icon={faMoon} />
               <Text>Dark mode</Text>

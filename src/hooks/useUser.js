@@ -9,6 +9,7 @@ export const ME_QUERY = gql`
       fullName
       username
       email
+      password
       avatar
       bio
       userLeader {
