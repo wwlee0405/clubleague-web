@@ -1,8 +1,13 @@
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   faClock,
   faMap,
+  faBookmark,
+  faComment,
+  faHeart,
 } from "@fortawesome/free-regular-svg-icons";
+import { faComment as SolidComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import { CardContainer, CardBottom, MainText, SubText } from "../shared";
@@ -14,6 +19,8 @@ import ProfileRow from "../profile/ProfileRow";
 import DateMonth from "../shared/DateMonth";
 import DateDayOfWeek from "../shared/DateDayOfWeek";
 import AwayClubModal from "./AwayClubModal";
+import CommentItem from "./CommentItem";
+import CommentInput from "./CommentInput";
 
 const Container = styled(CardContainer)``;
 const ExtraContainer = styled(CardBottom)``;
@@ -129,7 +136,17 @@ const CaptionData = styled.div`
   padding-horizontal: 15px;
 `;
 const CommentContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin: 8px 15px;
+  svg {
+    font-size: 20px;
+  }
+`;
+const CommentAction = styled.div`
+  margin-right: 10px;
+  cursor: pointer;
 `;
 const CommentCount = styled(SubText)`
   font-weight: 600;
@@ -150,8 +167,9 @@ const TitleText = styled(SubText)`
   font-size: 15px;
 `;
 
-function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }) {
+function GameItem({ id, user, homeGame, awayGame, caption, date, comments, commentNumber }) {
   const { data } = useUser();
+  const [visible, setVisible] = useState(false);
   const { Modal: AwayGame, open: awayGameOpen, close: awayGameClose } = useModal();
   const { EntryModal: HomeEntryModal, entryOpen: homeEntryOpen } = useEntryModal();
   const { EntryModal: AwayEntryModal, entryOpen: awayEntryOpen } = useEntryModal();
@@ -162,154 +180,175 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, commentNumber }
   const day = new Date(parseInt(date)).toString().slice(8, 10);
   const time = new Date(parseInt(date)).toString().slice(16, 21);
   return (
-    <Container key={id}>
-      <HeaderAvatar
-        profileLink={
-          data?.me?.username !== user?.username ? 
-            (`/users/${user?.username}`) : (`/${data?.me?.username}`)
-        }
-        image={user?.avatar ? user.avatar : require('../../data/gggg.jpg')}
-        topData={user?.username}
-        bottomData="Seoul, Korea"
-      />
-     
-      <ExtraContainer>
-        <Dates>
-          <MatchDate><DateMonth date={date} /> {day}</MatchDate>
-          <MatchWeek><DateDayOfWeek date={date} /></MatchWeek>
-        </Dates>
+    <div key={id}>
+      <Container>
+        <HeaderAvatar
+          profileLink={
+            data?.me?.username !== user?.username ? 
+              (`/users/${user?.username}`) : (`/${data?.me?.username}`)
+          }
+          image={user?.avatar ? user.avatar : require('../../data/gggg.jpg')}
+          topData={user?.username}
+          bottomData="Seoul, Korea"
+        />
+      
+        <ExtraContainer>
+          <Dates>
+            <MatchDate><DateMonth date={date} /> {day}</MatchDate>
+            <MatchWeek><DateDayOfWeek date={date} /></MatchWeek>
+          </Dates>
 
-        <GameContent>
-          <ClubData>
-            {homeGame?.club.emblem ? (
-              <ClubEmblem src={homeGame?.club.emblem} />
-            ) : (
-              <ClubEmblem src={require('../../data/2bar.jpg')} />
-            )}
-            <ClubName>{homeGame?.club.clubname}</ClubName>
-          </ClubData>
-          <KickOffData>
-            <KickOffTime>{time}</KickOffTime>
-            <Location>Santiago Bernabéu dkndkfnbkdfnbkfjdnb</Location>
-          </KickOffData>
-          {awayGame?.id ? (
-            <ClubData
-              onClick={() => null}
-            >
-              {awayGame?.club.emblem ? (
-                <ClubEmblem src={awayGame?.club.emblem} />
+          <GameContent>
+            <ClubData>
+              {homeGame?.club.emblem ? (
+                <ClubEmblem src={homeGame?.club.emblem} />
               ) : (
                 <ClubEmblem src={require('../../data/2bar.jpg')} />
               )}
-                <ClubName>{awayGame?.club.clubname}hvbhjvhvhgvhgvgvvgvgvgvgv</ClubName>
+              <ClubName>{homeGame?.club.clubname}</ClubName>
             </ClubData>
-          ) : (
-            <ClubData>
-              <AwayText>Away</AwayText>
-            </ClubData>
-            )}
-        </GameContent>
-
-        <TimeLocationContent>
-          <TimeLocationData>
-            <FontAwesomeIcon icon={faClock} size="1x" />
-            <TimeLocation>14:00 - 16:00</TimeLocation>
-          </TimeLocationData>
-          <TimeLocationData>
-            <FontAwesomeIcon icon={faMap} size="1x"/>
-           
-            <TimeLocation>Camp Nou</TimeLocation>
-          </TimeLocationData>
-        </TimeLocationContent>
-
-        <EntryContent>
-          <Entry onClick={homeEntryOpen}>          
-            <EntryText>{homeGame?.entryNumber === 1 ? "1 entry" : `${homeGame?.entryNumber} entries`}</EntryText>
-            <div>
-              <UserAvatar src={require('../../data/ffff.jpg')} />
-            </div>
-            <div>
-              <UserAvatar src={require('../../data/gggg.jpg')} />
-            </div>
-          </Entry>
-          {/* Home Entry Modal */}
-          <HomeEntryModal>
-            {homeGame?.entryNumber !== 0 ? (
-              homeGame?.entries?.map((entry) => (
-              <ProfileRow 
-                key={homeGame.id}
-                profileLink={
-                  data?.me?.username !== entry?.user.username ? 
-                    (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
-                } 
-                avatar={entry?.user.avatar} 
-                username={entry?.user.username} 
-              />))
-            ) : (
-            <span>아직 엔트리에 멤버들이 없습니다.</span>)}
-          </HomeEntryModal>
-
-          {awayGame?.id ? (
-            <div>
-              <Entry onClick={awayEntryOpen}>
-                <EntryText>{awayGame?.entryNumber === 1 ? "1 entry" : `${awayGame?.entryNumber} entries`}</EntryText>
-                <div style={{ paddingRight: 3 }}>
-                  <UserAvatar src={require('../../data/ffff.jpg')} />
-                </div>
-                <div style={{ paddingRight: 3 }}>
-                  <UserAvatar src={require('../../data/gggg.jpg')} />
-                </div>
-              </Entry>
-              {/* Away Entry Modal */}
-              <AwayEntryModal>
-                {awayGame?.entryNumber !== 0 ? (
-                  awayGame?.entries?.map((entry) => (
-                  <ProfileRow
-                    key={awayGame.id}
-                    profileLink={
-                      data?.me?.username !== entry?.user.username ? 
-                        (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
-                    }
-                    avatar={entry?.user.avatar} 
-                    username={entry?.user.username} 
-                  />))
+            <KickOffData>
+              <KickOffTime>{time}</KickOffTime>
+              <Location>Santiago Bernabéu dkndkfnbkdfnbkfjdnb</Location>
+            </KickOffData>
+            {awayGame?.id ? (
+              <ClubData
+                onClick={() => null}
+              >
+                {awayGame?.club.emblem ? (
+                  <ClubEmblem src={awayGame?.club.emblem} />
                 ) : (
-                <span>아직 엔트리에 멤버들이 없습니다.</span>)}
-              </AwayEntryModal>
-            </div>       
-          ) : (
-            <Entry>
-              <EntryText>No Entry</EntryText>
+                  <ClubEmblem src={require('../../data/2bar.jpg')} />
+                )}
+                  <ClubName>{awayGame?.club.clubname}hvbhjvhvhgvhgvgvvgvgvgvgv</ClubName>
+              </ClubData>
+            ) : (
+              <ClubData>
+                <AwayText>Away</AwayText>
+              </ClubData>
+              )}
+          </GameContent>
+
+          <TimeLocationContent>
+            <TimeLocationData>
+              <FontAwesomeIcon icon={faClock} size="1x" />
+              <TimeLocation>14:00 - 16:00</TimeLocation>
+            </TimeLocationData>
+            <TimeLocationData>
+              <FontAwesomeIcon icon={faMap} size="1x"/>
+            
+              <TimeLocation>Camp Nou</TimeLocation>
+            </TimeLocationData>
+          </TimeLocationContent>
+
+          <EntryContent>
+            <Entry onClick={homeEntryOpen}>
+              <EntryText>{homeGame?.entryNumber === 1 ? "1 entry" : `${homeGame?.entryNumber} entries`}</EntryText>
+              <div>
+                <UserAvatar src={require('../../data/ffff.jpg')} />
+              </div>
+              <div>
+                <UserAvatar src={require('../../data/gggg.jpg')} />
+              </div>
             </Entry>
-          )}
-        </EntryContent>
+            {/* Home Entry Modal */}
+            <HomeEntryModal>
+              {homeGame?.entryNumber !== 0 ? (
+                homeGame?.entries?.map((entry) => (
+                <ProfileRow 
+                  key={homeGame.id}
+                  profileLink={
+                    data?.me?.username !== entry?.user.username ? 
+                      (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
+                  } 
+                  avatar={entry?.user.avatar} 
+                  username={entry?.user.username} 
+                />))
+              ) : (
+              <span>아직 엔트리에 멤버들이 없습니다.</span>)}
+            </HomeEntryModal>
 
-        <FileImg 
-          src={require('../../data/bbbb.jpg')} 
-        />
+            {awayGame?.id ? (
+              <div>
+                <Entry onClick={awayEntryOpen}>
+                  <EntryText>{awayGame?.entryNumber === 1 ? "1 entry" : `${awayGame?.entryNumber} entries`}</EntryText>
+                  <div style={{ paddingRight: 3 }}>
+                    <UserAvatar src={require('../../data/ffff.jpg')} />
+                  </div>
+                  <div style={{ paddingRight: 3 }}>
+                    <UserAvatar src={require('../../data/gggg.jpg')} />
+                  </div>
+                </Entry>
+                {/* Away Entry Modal */}
+                <AwayEntryModal>
+                  {awayGame?.entryNumber !== 0 ? (
+                    awayGame?.entries?.map((entry) => (
+                    <ProfileRow
+                      key={awayGame.id}
+                      profileLink={
+                        data?.me?.username !== entry?.user.username ? 
+                          (`/users/${entry?.user.username}`) : (`/${data?.me?.username}`)
+                      }
+                      avatar={entry?.user.avatar} 
+                      username={entry?.user.username} 
+                    />))
+                  ) : (
+                  <span>아직 엔트리에 멤버들이 없습니다.</span>)}
+                </AwayEntryModal>
+              </div>       
+            ) : (
+              <Entry>
+                <EntryText>No Entry</EntryText>
+              </Entry>
+            )}
+          </EntryContent>
 
-        <AwayData onClick={awayGameOpen}>
-          <TitleText>Select a home club to play the game</TitleText>
-        </AwayData>
-        <AwayGame title="Away 클럽을 정하시오.">
-          <AwayClubModal
-            matchId={id} 
-            userId={user?.id}  
-            onClose={awayGameClose}
+          <FileImg 
+            src={require('../../data/bbbb.jpg')} 
           />
-        </AwayGame>
 
-        <CaptionData>
-          <span>{caption}</span>
-        </CaptionData>
+          <AwayData onClick={awayGameOpen}>
+            <TitleText>Select a home club to play the game</TitleText>
+          </AwayData>
+          <AwayGame title="Away 클럽을 정하시오.">
+            <AwayClubModal
+              matchId={id} 
+              userId={user?.id}  
+              onClose={awayGameClose}
+            />
+          </AwayGame>
 
-        <CommentContent>
-          <CommentCount>{commentNumber === 1 ? "1 comment" : `${commentNumber} comments`}</CommentCount>
-        </CommentContent>
+          <CaptionData>
+            <span>{caption}</span>
+          </CaptionData>
 
-      </ExtraContainer>
-    
-    </Container>
+          <CommentContent>
+            <CommentAction 
+              onClick={() => {
+                setVisible(!visible);
+              }} 
+            >
+              <FontAwesomeIcon 
+                style={{ color: visible ? "tomato" : "inherit" }}
+                icon={visible ? SolidComment : faComment}
+              />
+            </CommentAction>
+            <CommentCount>{commentNumber === 1 ? "1 comment" : `${commentNumber} comments`}</CommentCount>
+          </CommentContent>
+          
+
+        </ExtraContainer>
+          
+      </Container>
+      {visible && 
+        <div>
+          <CommentInput matchId={id} />
+          {comments?.map((comment) => (
+            <CommentItem key={comment.id} {...comment} />
+          ))}
+        </div>
+      }
+    </div>
   );
 }
 

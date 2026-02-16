@@ -41,10 +41,14 @@ const SEE_GAME = gql`
         }
         isEntry
       }
+      comments {
+        ...CommentFragment
+      }  
       commentNumber
     }
   }
   ${GAME_FRAGMENT}
+  ${COMMENT_FRAGMENT}
 `;
 
 const SEE_GAME_COMMENTS = gql`
@@ -74,9 +78,6 @@ const Form = styled.div`
     flex-direction: row;
   }
 `;
-const Container = styled.div`
-  padding: 10px;
-`;
 
 function GameFeed() {
   const { state } = useLocation();
@@ -92,17 +93,7 @@ function GameFeed() {
   });
   return (
     <Form>
-
-      <Container>
-        <GameItem key={data?.seeGame.id} {...data?.seeGame} />
-      </Container>
-
-      <Container>
-        {dataComment?.seeGame?.comments?.map((comment) => (
-          <CommentItem key={comment.id} {...comment} />
-        ))}
-      </Container>
-
+      <GameItem key={data?.seeGame.id} {...data?.seeGame} />
     </Form>
   );
 }
