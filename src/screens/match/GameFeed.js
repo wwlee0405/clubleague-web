@@ -2,7 +2,6 @@ import { gql, useQuery } from "@apollo/client";
 import { GAME_FRAGMENT, COMMENT_FRAGMENT } from "../../gql/fragments";
 import PageTitle from "../../components/PageTitle";
 import GameItem from "../../components/match/GameItem";
-import CommentItem from "../../components/match/CommentItem";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
@@ -51,32 +50,12 @@ const SEE_GAME = gql`
   ${COMMENT_FRAGMENT}
 `;
 
-const SEE_GAME_COMMENTS = gql`
-  query seeGame($id: Int!) {
-    seeGame(id: $id) {
-      id
-      comments {
-        ...CommentFragment
-      }
-      commentNumber
-    }
-  }
-  ${COMMENT_FRAGMENT}
-`;
-
-const Form = styled.div`
-  // 모바일 (767px 이하) 스타일
-
+const Container = styled.div`
   margin: 0 auto;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  background-color: ${(props) => props.theme.bgColor};
-
-  // 데스크톱 (768px 이상) 스타일
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
+  padding-top: 20px;
+  padding-bottom: 20px;
+  max-width: 615px;
+  width: 100%;
 `;
 
 function GameFeed() {
@@ -86,15 +65,10 @@ function GameFeed() {
       id: state?.matchId,
     },
   });
-  const { data: dataComment } = useQuery(SEE_GAME_COMMENTS, {
-    variables: {
-      id: state?.matchId,
-    },
-  });
   return (
-    <Form>
+    <Container>
       <GameItem key={data?.seeGame.id} {...data?.seeGame} />
-    </Form>
+    </Container>
   );
 }
 export default GameFeed;

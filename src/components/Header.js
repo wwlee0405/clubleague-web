@@ -1,10 +1,9 @@
-import React, { useState } from "react";
 import { useReactiveVar } from "@apollo/client";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faPaperPlane, faBell } from "@fortawesome/free-regular-svg-icons";
 import { faHome, faDisplay, faCamera, faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, NavLink  } from "react-router-dom";
 import { isLoggedInVar } from "../apollo";
 import styled from "styled-components";
 import useUser from "../hooks/useUser";
@@ -75,9 +74,6 @@ const CreateModalTextWrep = styled.div`
 const CreateModalText = styled(MainText)`
   font-size: 16px;
 `;
-const CursorIcon = styled.div`
-  cursor: pointer;
-`;
 const IconsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -94,42 +90,23 @@ const Icon = styled.span`
   }
   cursor: pointer;
 `;
+const NotiIcon = styled.div`
+  display: flex;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: ${(props) => props.theme.hover};
+  }
+`;
 const NotiModalContainer = styled.div`
   margin-top: 57px;
   margin-right: 20px;
-`;
-const IconBackup = styled.span`
-  margin-left: 30px;
-  transition: 0.5s;
-  &:hover,
-  &:focus {
-    color: ${(props) => props.theme.symbolColor};
-  }
-  &:active {
-    color: ${(props) => props.theme.accent};
-  }
-  ${(props) => {
-    switch (props.$mode) {
-      case "dark" : 
-        return `
-        backround-color: black;
-        color: white;
-        ${Link} : checked + && {
-        color: blue;
-        }
-        `;
-      default:
-        return `
-        background-color: white;
-        color: red;
-        ${Link} : checked + && {
-        color: yellow;
-        }
-        `;
-    }
-  }
-  }
-
 `;
 const Button = styled.span`
   background-color: ${(props) => props.theme.accent};
@@ -138,17 +115,18 @@ const Button = styled.span`
   color: white;
   font-weight: 600;
 `;
+const navLinkStyles = ({ isActive }) => ({
+  color: isActive ? "#2e8b57" : "#818892",
+  textDecoration: isActive ? 'none' : 'underline',
+  fontWeight: isActive ? 'bold' : 'normal',
+});
 
 function Header() {
-  const [homeColor, setHomeColor] = useState({ color: "yellow" });
-  const [matchColor, setMatchColor] = useState({ color: "yellow" });
-
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const { data } = useUser();
   const { VanillaModal: SearchModal, vanillaOpen: searchOpen, vanillaClose: searchClose } = useVanillaModal();
-  const { VanillaModal: CreateModal, vanillaOpen: createOpen, vanillaClose: createClose } = useVanillaModal();
-  const { VanillaModal: NotiModal, vanillaOpen: notiOpen, vanillaClose: notiClose } = useVanillaModal();
-
+  const { VanillaModal: CreateModal, vanillaOpen: createOpen } = useVanillaModal();
+  const { VanillaModal: NotiModal, vanillaOpen: notiOpen } = useVanillaModal();
   return (
     <HeaderContainer>
       <Wrapper>
@@ -156,9 +134,7 @@ function Header() {
           <FontAwesomeIcon icon={faInstagram} size="3x" />
 
           <IconBox onClick={searchOpen}>
-            <CursorIcon>
-              <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" />  
-            </CursorIcon>
+            <FontAwesomeIcon icon={faMagnifyingGlass} fontSize="18px" />
           </IconBox>
           <SearchModal onClick={(e) => e.stopPropagation()}>
             <HeaderSearch onClose={searchClose} />
@@ -166,9 +142,7 @@ function Header() {
           
           <>
             <IconBox onClick={createOpen}>
-              <CursorIcon>
-                <FontAwesomeIcon icon={faPlus} fontSize="18px" /> 
-              </CursorIcon>
+              <FontAwesomeIcon icon={faPlus} fontSize="18px" />
             </IconBox>
             <CreateModal>
               <CreateModalContainer>
@@ -194,29 +168,33 @@ function Header() {
 
         <Row>
           {isLoggedIn ? (
-            <IconsContainer>   
+            <IconsContainer>
               <Icon>
-                <Link to={routes.home}>
-                  <FontAwesomeIcon icon={faHome} fontSize="22px" style={{ color: homeColor }} onClick={() => setHomeColor('blue')} />
-                  <span>home</span>
-                </Link>
+                <NavLink to={routes.home} style={navLinkStyles}>
+                  <FontAwesomeIcon icon={faHome} fontSize="22px" />
+                </NavLink>
               </Icon>
               <Icon>
-                <Link to={routes.match}>
-                  <FontAwesomeIcon icon={faDisplay} fontSize="22px" style={{ color: matchColor}} onClick={() => setMatchColor('blue')} />
+                <NavLink to={routes.match} style={navLinkStyles}>
+                  <FontAwesomeIcon icon={faDisplay} fontSize="22px" />
                   <span>match</span>
-                </Link>
+                </NavLink>
               </Icon>
               <Icon>
-                <Link to={routes.outcluber}>
+                <NavLink to={routes.outcluber} style={navLinkStyles}>
                   <FontAwesomeIcon icon={faPaperPlane} fontSize="22px" />
                   <span>outcluber</span>
-                </Link>
+                </NavLink>
+              </Icon>
+              <Icon>
+                <NavLink to={routes.photo} style={navLinkStyles}>
+                  <FontAwesomeIcon icon={faCamera} fontSize="22px" />
+                </NavLink>
               </Icon>
 
-              <Icon onClick={notiOpen}>
-                <FontAwesomeIcon icon={faBell} fontSize="22px" />
-              </Icon>
+              <NotiIcon onClick={notiOpen}>
+                <FontAwesomeIcon icon={faBell} fontSize="22px" style={{ color: "#818892" }} />
+              </NotiIcon>
               <NotiModal 
                 $display="flex" 
                 $justfyContent="flex-end"
@@ -228,20 +206,15 @@ function Header() {
               </NotiModal>
 
               <Icon>
-                <Link to={routes.photo}>
-                  <FontAwesomeIcon icon={faCamera} fontSize="22px" />
-                </Link>
-              </Icon>
-              <Icon>
-                <Link to={`/${data?.me?.username}`}>
+                <NavLink to={`/${data?.me?.username}`} style={navLinkStyles}>
                   <Avatar $lg url={data?.me?.avatar} />
-                </Link>
+                </NavLink>
               </Icon>
             </IconsContainer>
           ) : (
-            <Link to={routes.home}>
+            <NavLink to={routes.home}>
               <Button>Login</Button>
-            </Link>
+            </NavLink>
           )}
         </Row>
       </Wrapper>

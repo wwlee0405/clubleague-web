@@ -2,8 +2,9 @@ import React, { useCallback, useState } from 'react';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { ModalContainer } from "../components/shared";
 
-const ModalContainer = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 100vh;
   over-flow: hidden;
@@ -16,7 +17,7 @@ const ModalContainer = styled.div`
   align-items: center;
   text-align: center;
 `;
-const ModalStyle = styled.div`
+const ModalStyle = styled(ModalContainer)`
   width: 600px;
   padding: 10px;
   border-radius: 20px;
@@ -46,7 +47,7 @@ const useEntryModal = ({ useBlur = true } = {}) => {
   return {
     EntryModal: isOpen
       ? ({ children }) => (
-        <ModalContainer 
+        <Container 
           className="modal"
           onClick={useBlur ? entryClose : null}
         >
@@ -62,7 +63,7 @@ const useEntryModal = ({ useBlur = true } = {}) => {
             </ModalHeader>
             {children}
           </ModalStyle>
-        </ModalContainer>
+        </Container>
       )
       : () => null,
     entryOpen,

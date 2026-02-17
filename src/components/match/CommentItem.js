@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import PropTypes from "prop-types";
 import { faEllipsis,faX, faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CardContainer, CardBottom, MainText, SubText } from "../shared";
 import useUser from "../../hooks/useUser";
 import styled from "styled-components";
 import ProfileRow from "../profile/ProfileRow";
@@ -15,13 +16,11 @@ const DELETE_COMMENT_MUTATION = gql`
   }
 `;
 
-const Container = styled.div`
-  background-color: ${(props) => props.theme.cardHeader};
-  border-radius: 15px;
-  border: 1px solid ${(props) => props.theme.border};
+const Container = styled(CardContainer)`
   padding: 0px 15px 15px;
   margin-bottom: 5px;
 `;
+
 const Top = styled.div`
   display: flex;
   flex-direction: row;
@@ -106,7 +105,7 @@ function CommentItem({ id, matchId, user, payload, isMine }) {
           <Action onClick={commentOpen}>
             <FontAwesomeIcon 
               icon={faEllipsis} 
-              size="2x"
+              fontSize="18px"
             />
           </Action> 
         ) : null}

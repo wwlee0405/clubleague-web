@@ -151,12 +151,12 @@ export default function CommentInput({ matchId }) {
             <Comment
               {...register("payload", { required: true })}
               type="text"
-              placeholder="Leave a comment"
+              placeholder={"Leave a comment in " + userData?.me?.username + "'s name"}
             />
             <CommentBottom>
               <Action type="submit">
                 {loading ? (
-                  <OrbitProgress color="white" style={{ fontSize: "2px" }} />
+                  <OrbitProgress color="white" style={{ fontSize: "5px" }} />
                     ) : (
                   <FontAwesomeIcon
                     style={{ 

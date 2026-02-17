@@ -83,11 +83,6 @@ const Location = styled(SubText)`
   font-size: 13px;
   text-align: center;
 `;
-const AwayBtn = styled.div`
-  margin-bottom: 15px;
-  align-items: center;
-  width: 35%;
-`;
 const AwayText = styled(SubText)`
   font-weight: 600;
   font-size: 25px;
@@ -165,6 +160,9 @@ const AwayData = styled.div`
 `;
 const TitleText = styled(SubText)`
   font-size: 15px;
+`;
+const CommentContainer = styled.div`
+  max-width: 615px;
 `;
 
 function GameItem({ id, user, homeGame, awayGame, caption, date, comments, commentNumber }) {
@@ -336,9 +334,8 @@ function GameItem({ id, user, homeGame, awayGame, caption, date, comments, comme
             <CommentCount>{commentNumber === 1 ? "1 comment" : `${commentNumber} comments`}</CommentCount>
           </CommentContent>
           
-
         </ExtraContainer>
-          
+
       </Container>
       {visible && 
         <div>

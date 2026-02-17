@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ModalContainer } from "./shared";
 
-const ModalContainer = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 100vh;
   over-flow: hidden;
@@ -16,7 +17,7 @@ const ModalContainer = styled.div`
   text-align: center;
   z-index: 1; 
 `;
-const ModalStyle = styled.div`
+const ModalStyle = styled(ModalContainer)`
   width: 600px;
   border-radius: 20px;
   background-color: ${(props) => props.theme.cardContent};
@@ -40,7 +41,7 @@ const ModalContent = styled.div`
 
 export default function Modal({ onClose, title, children }) {
   return (
-    <ModalContainer 
+    <Container 
       className="modal"
       onClick={onClose}
     >
@@ -57,6 +58,6 @@ export default function Modal({ onClose, title, children }) {
         </ModalHeader>
         <ModalContent>{children}</ModalContent>
       </ModalStyle>
-    </ModalContainer>
+    </Container>
   );
 }

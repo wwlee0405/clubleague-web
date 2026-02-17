@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import styled from "styled-components";
-import { MainText, SubText } from "./shared";
+import { MainText, SubText, ModalContainer } from "./shared";
 import Avatar from "./shared/Avatar";
 import { Link } from "react-router-dom";
 
@@ -19,7 +19,7 @@ const SEE_NOTI = gql`
   }
 `;
 
-const Container = styled.div`
+const Container = styled(ModalContainer)`
   padding: 5px;
   border-radius: 10px;
   background-color: ${(props) => props.theme.cardContent};

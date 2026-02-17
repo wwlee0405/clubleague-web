@@ -11,6 +11,7 @@ export const CardContainer = styled.div`
   border-radius: 15px;
   border: 1px solid ${(props) => props.theme.border};
   max-width: 615px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 `;
 
 export const CardBottom = styled.div`
@@ -18,6 +19,10 @@ export const CardBottom = styled.div`
   padding-bottom: 15px;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+`;
+
+export const ModalContainer = styled.div`
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 `;
 
 export const HeaderStyle = styled.div`

@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom";
 import useModal from './hooks/useModal';
 import Header from "./components/Header";
 import { faUser, faMoon, faFile, faPaperPlane, faHeart } from "@fortawesome/free-regular-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MainText, SubText } from "./components/shared";
+import { MainText } from "./components/shared";
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.bgColor};
@@ -57,7 +56,6 @@ const Text = styled(MainText)`
 
 function RowRoot() {
   const { Modal: Trans_Langs, open: trans_Langs_Open, close: trans_Langs_Close } = useModal();
-  
   const navigate = useNavigate();
   const logOut = () => {
     navigate(`/`);
